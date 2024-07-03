@@ -1,0 +1,42 @@
+POST http://localhost:4000/signup
+Content-Type: application/json
+
+{
+    "firstName": "toba", 
+    "lastName": "adnew", 
+    "username": "toba",
+    "password": "him", 
+    "author": true
+}
+
+###
+
+POST http://localhost:4000/login
+Content-Type: application/json 
+
+{
+    "username": "toba",
+    "password": "him",
+    "id": "6685b8f009a4362bf83f625d"
+}
+
+###
+
+POST http://localhost:4000/refresh-token
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidG9iYSIsImlhdCI6MTcyMDAzOTg1MCwiZXhwIjoxNzIwNjQ0NjUwfQ.1_fR63SF_X81-7QzNRKgh22D022YAxPRL94Z-T-AFCs"
+}
+
+### 
+GET http://localhost:4000/protected
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidG9iYSIsImlhdCI6MTcyMDAzOTg3NSwiZXhwIjoxNzIwMDM5ODg1fQ.BF14W02_DNaMmw079p8HNbYngUFMtNR3akjcMmbmjj8
+
+### 
+DELETE http://localhost:4000/logout
+Content-Type: application/json
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidG9iYSIsImlhdCI6MTcyMDAzOTg1MCwiZXhwIjoxNzIwNjQ0NjUwfQ.1_fR63SF_X81-7QzNRKgh22D022YAxPRL94Z-T-AFCs"
+}

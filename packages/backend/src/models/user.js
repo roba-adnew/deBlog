@@ -6,7 +6,7 @@ const UserSchema = new Schema({
     lastName: { type: String, required: true },
     username: { type: String, required: true},
     hashedPassword: { type: String, required: true},
-    start: { type: Number, required: true, default: Date.now() }, // ms
+    start: { type: Number, required: true, default: Date.now }, // ms
     author: { type: Boolean, required: true }
 })
 
