@@ -5,7 +5,7 @@ const sevenDays = 7 * 24 * 60 * 60 * 1000;
 
 const RefreshTokenSchema = new Schema({
     token: { type: String, required: true, unique: true },
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     createdAt: { type: Number, required: true, default: Date.now },
     expiresAt: { 
         type: Date, 

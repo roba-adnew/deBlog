@@ -18,6 +18,7 @@ Content-Type: application/json
     "username": "toba",
     "password": "him",
     "id": "6685b8f009a4362bf83f625d"
+
 }
 
 ###
@@ -26,19 +27,17 @@ POST http://localhost:4000/refresh-token
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidG9iYSIsImlhdCI6MTcyMDAzOTg1MCwiZXhwIjoxNzIwNjQ0NjUwfQ.1_fR63SF_X81-7QzNRKgh22D022YAxPRL94Z-T-AFCs"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNDU3ODc1LCJleHAiOjE3MjEwNjI2NzV9.BFqDVW5Su-FIcWJ1IhQaUz1eNcmI90-hgsGag-B9C94"
 }
-
-edit
 
 ### 
 GET http://localhost:4000/protected
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidG9iYSIsImlhdCI6MTcyMDAzOTg3NSwiZXhwIjoxNzIwMDM5ODg1fQ.BF14W02_DNaMmw079p8HNbYngUFMtNR3akjcMmbmjj8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNDU3OTA5LCJleHAiOjE3MjA0NTc5MTl9.OSsLKUhrI9hLg0oXCd9ZTSatSmu0Rp1Up3w1N6f7Le0
 
 ### 
 DELETE http://localhost:4000/logout
 Content-Type: application/json
 
 {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidG9iYSIsImlhdCI6MTcyMDAzOTg1MCwiZXhwIjoxNzIwNjQ0NjUwfQ.1_fR63SF_X81-7QzNRKgh22D022YAxPRL94Z-T-AFCs"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNDU3ODc1LCJleHAiOjE3MjEwNjI2NzV9.BFqDVW5Su-FIcWJ1IhQaUz1eNcmI90-hgsGag-B9C94"
 }

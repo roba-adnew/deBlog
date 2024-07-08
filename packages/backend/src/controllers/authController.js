@@ -11,32 +11,30 @@ const LocalStrategy = require("passport-local").Strategy
 const User = require('../models/user')
 const RefreshToken = require('../models/refreshToken');
 
-exports.accountCreationPost = [
-    asyncHandler(async (req, res, next) => {
-        bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-            if (err) {
-                debug(`password hashing failed for ${req.body.username}`)
-                return next(err)
-            }
-            try {
-                const user = new User({
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    username: req.body.username,
-                    hashedPassword: hashedPassword,
-                    author: req.body.author,
-                })
-                const result = await user.save()
-                debug(`Attempted account creation result for ${req.body.username}: %O`, result)
-                return res.status(201).json({ message: 'Account created' })
+exports.accountCreationPost = asyncHandler(async (req, res, next) => {
+    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+        if (err) {
+            debug(`password hashing failed for ${req.body.username}`)
+            return next(err)
+        }
+        try {
+            const user = new User({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                username: req.body.username,
+                hashedPassword: hashedPassword,
+                author: req.body.author,
+            })
+            const result = await user.save()
+            debug(`Setting up account for ${req.body.username}: %O`, result)
+            return res.status(201).json({ message: 'Account created' })
 
-            } catch (err) {
-                debug(`Account creation error for ${req.body.username}: %O`, err)
-                return next(err)
-            }
-        })
+        } catch (err) {
+            debug(`Account creation error for ${req.body.username}: %O`, err)
+            return next(err)
+        }
     })
-]
+})
 
 passport.use(
     new LocalStrategy(async (username, password, done) => {
@@ -62,7 +60,7 @@ passport.use(
 
 const jwtStrategyOpts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.ACCESS_TOKEN_SECRET //|| 'temp_secret_for_testing'
+    secretOrKey: process.env.ACCESS_TOKEN_SECRET 
     // Not including an issuer or audience given we don't have a domain 
 }
 
@@ -76,7 +74,11 @@ exports.loginPost = [
     passport.authenticate("local", { session: false }),
     asyncHandler(async (req, res, next) => {
         try {
-            const user = { name: req.body.username };
+            const user = {
+                id: req.user.id,
+                name: req.user.name,
+                author: req.user.author
+            }
             const accessToken = generateAccessToken(user)
             const refreshToken = jwt.sign(
                 user,
@@ -85,7 +87,7 @@ exports.loginPost = [
             )
             const dbRefreshToken = new RefreshToken({
                 token: refreshToken,
-                user: req.body.id,
+                userId: user.id
             })
             const result = await dbRefreshToken.save();
             debug(`DB Refresh Token save results: %O`, result)
@@ -100,19 +102,24 @@ exports.loginPost = [
 exports.refreshToken = asyncHandler(async (req, res) => {
     try {
         const refreshToken = req.body.refreshToken;
-        debug('token extracted')
-
         if (!refreshToken) return res.sendStatus(401);
+        debug('refresh token extracted')
 
         const dbToken = await RefreshToken.findOne({ token: refreshToken })
         if (!dbToken) return res.sendStatus(403);
+        debug('refresh token identified')
 
         jwt.verify(
             refreshToken,
             process.env.REFRESH_TOKEN_SECRET,
             (err, user) => {
+                const userDetails = {
+                    id: user.id,
+                    name: user.name,
+                    author: user.author
+                }
                 if (err) return res.sendStatus(403);
-                const accessToken = generateAccessToken({ name: user.name})
+                const accessToken = generateAccessToken(userDetails)
                 res.json({ accessToken: accessToken })
             }
         )
@@ -128,7 +135,7 @@ exports.checkGet = [
     }
 ]
 exports.logoutPost = asyncHandler(async (req, res) => {
-    const  refreshToken  = req.body.token;
+    const refreshToken = req.body.token;
     try {
         const query = { token: refreshToken }
         debug(query)
