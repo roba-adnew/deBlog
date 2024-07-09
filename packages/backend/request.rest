@@ -17,7 +17,21 @@ Content-Type: application/json
 {
     "username": "toba",
     "password": "him",
-    "id": "6685b8f009a4362bf83f625d"
+    "id": "6685b8f009a4362bf83f625d",
+    "comments": 
+
+}
+
+###
+
+POST http://localhost:4000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNTU2Njk2LCJleHAiOjE3MjA1NjAyOTZ9.jRkr2bQPij5NPJtzlsBwSNU6HFX8lenaHL0byj6jBow
+Content-Type: application/json
+
+{
+    "userId": "6685b8f009a4362bf83f625d",
+    "title": "the one",
+    "content": "its the first one. what else must I say?"
 
 }
 

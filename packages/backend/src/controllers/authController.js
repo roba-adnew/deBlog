@@ -33,7 +33,7 @@ exports.accountCreationPost = asyncHandler(async (req, res, next) => {
 })
 
 exports.loginPost = [
-    passport.authenticate("local", { session: false }),
+    passport.authenticate("jwt", { session: false }),
     asyncHandler(async (req, res, next) => {
         try {
             const user = {
@@ -113,5 +113,5 @@ exports.logoutPost = asyncHandler(async (req, res) => {
 })
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10s' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
 }

@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose');
 const passport = require('./src/controllers/passportConfig')
 const authRouter = require('./src/routes/auth')
+const postRouter = require('./src/routes/post')
 
 mongoose.set('strictQuery', false);
 const mongoDB = process.env.MONGODB_URI;
@@ -22,5 +23,6 @@ main();
 app.use(express.json())
 app.use(passport.initialize());
 app.use('/', authRouter);
+app.use('/', postRouter);
 
 app.listen(4000)

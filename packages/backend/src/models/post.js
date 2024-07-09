@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const Comment = require('./comment');
+const { CommentSchema } = require('./comment');
 
 const PostSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -9,7 +9,7 @@ const PostSchema = new Schema({
     content: { type: String, required: true },
     published: { type: Boolean, required: true, default: false },
     draft: { type: Boolean, required: true, default: true },
-    comments: [Comment.CommentSchema]
+    comments: [CommentSchema]
 })
 
 const Post = mongoose.model("Post", PostSchema);
