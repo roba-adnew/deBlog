@@ -96,12 +96,6 @@ exports.refreshToken = asyncHandler(async (req, res) => {
     }
 })
 
-exports.checkGet = [
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-        res.json({ message: 'This is a protected route', user: req.user });
-    }
-]
 exports.logoutPost = asyncHandler(async (req, res) => {
     const refreshToken = req.body.token;
     try {
@@ -114,7 +108,7 @@ exports.logoutPost = asyncHandler(async (req, res) => {
                 .status(404)
                 .json({ message: 'Refresh token unavailable' })
         }
-        res.sendStatus(204)
+        res.sendStatus(200).json({ message: 'Logged out successfully' })
     } catch (err) {
         debug('Came across the following error logging out: %O', err)
         res.status(500).json({ message: 'An unexpected error occurred' });
