@@ -3,7 +3,16 @@ const asyncHandler = require('express-async-handler')
 const Post = require('../models/post')
 const debug = require('debug')('deBlog:post')
 
-// exports.postsGet = asyncHandler(as)
+exports.postsGet = asyncHandler(async (req, res, next) => {
+    try {
+        const posts = await Post.find({});
+        debug('Retrieving posts');
+        res.json({ posts })
+    } catch (err) {
+        debug('Error retrieving posts: %O', err)
+        next(err)
+    }
+})
 
 exports.postCreationPost = (req, res, next) => {
     passport.authenticate("jwt", { session: false }, (err, user, info) => {
@@ -21,9 +30,9 @@ exports.postCreationPost = (req, res, next) => {
                 const result = await post.save()
                 debug(`Attempting post: %O`, result)
                 return res.status(201).json({ message: 'Post created' })
-            } catch (error) {
-                debug(`Post creation error for: %O`, error)
-                return next(error)
+            } catch (err) {
+                debug(`Post creation err for: %O`, err)
+                return next(err)
             }
         })(req, res, next)
     })(req, res, next);

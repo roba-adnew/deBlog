@@ -56,7 +56,7 @@ exports.loginPost = [
             res.json({ accessToken: accessToken, refreshToken: refreshToken })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
-            next(err)
+            res.status(401)
         }
     })
 ]
@@ -80,13 +80,18 @@ exports.refreshToken = asyncHandler(async (req, res) => {
                     name: user.name,
                     author: user.author
                 }
-                if (err) return res.sendStatus(403);
+                if (err) {
+                    return res
+                        .sendStatus(403)
+                        .json({ message: 'Error verifying refresh token' })
+                }
                 const accessToken = generateAccessToken(userDetails)
                 res.json({ accessToken: accessToken })
             }
         )
     } catch (err) {
         debug('Error refreshing token: %O', err)
+        res.status(500).json({ message: 'An unexpected error occurred' });
     }
 })
 
@@ -104,11 +109,14 @@ exports.logoutPost = asyncHandler(async (req, res) => {
         const deleted = await RefreshToken.findOneAndDelete(query).exec()
         if (!deleted) {
             debug('Deleted reads', deleted)
-            return res.status(404).json({ message: 'Refresh token unavailable' })
+            return res
+                .status(404)
+                .json({ message: 'Refresh token unavailable' })
         }
         res.sendStatus(204)
     } catch (err) {
         debug('Came across the following error logging out: %O', err)
+        res.status(500).json({ message: 'An unexpected error occurred' });
     }
 })
 
