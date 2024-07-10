@@ -1,10 +1,10 @@
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
+const debug = require('debug')('deBlog:auth')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 const LocalStrategy = require("passport-local").Strategy
 const User = require('../models/user')
-
 
 passport.use(
     new LocalStrategy(async (username, password, done) => {
@@ -28,7 +28,7 @@ passport.use(
 
 const jwtStrategyOpts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.ACCESS_TOKEN_SECRET 
+    secretOrKey: process.env.ACCESS_TOKEN_SECRET
     // Not including an issuer or audience given we don't have a domain 
 }
 
@@ -38,4 +38,5 @@ passport.use(
     })
 )
 
-module.exports = passport;
+
+module.exports = passport

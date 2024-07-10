@@ -11,40 +11,51 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:4000/login
+POST http://localhost:4000/user/login
 Content-Type: application/json 
 
 {
     "username": "toba",
-    "password": "him",
-    "id": "6685b8f009a4362bf83f625d",
-    "comments": 
-
+    "password": "him"
+ 
 }
 
 ###
 
 GET http://localhost:4000/posts
 
+###
 
 POST http://localhost:4000/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNTU2Njk2LCJleHAiOjE3MjA1NjAyOTZ9.jRkr2bQPij5NPJtzlsBwSNU6HFX8lenaHL0byj6jBow
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM1MzE5LCJleHAiOjE3MjA2Mzg5MTl9._mB6q5ISWi1-GYknb0uHlZN0Zh3gTVx567qC6eGTTsw
 Content-Type: application/json
 
 {
     "userId": "6685b8f009a4362bf83f625d",
-    "title": "the one",
-    "content": "its the first one. what else must I say?"
+    "title": "the next one",
+    "content": "gotta cracks a few greggs to make a tomelette"
 
 }
 
 ###
 
-POST http://localhost:4000/refresh-token
+POST http://localhost:4000/posts/comment
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM0NTMzLCJleHAiOjE3MjA2MzgxMzN9.uj3_JrXvNpv_7D4ePQ_VOGbMjYeiccpKLGV59yhUfw0
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNTU1NzE2LCJleHAiOjE3MjExNjA1MTZ9.A5YMUzi_OZUOa_gtmqji52-MhrDwlrcJVcBkdRIZjqI"
+    "postId": "668da5f319e206281f331a9a",
+    "commentUserId": "6685b8f009a4362bf83f625d",
+    "content": "this is a beaut"
+}
+
+###
+
+POST http://localhost:4000/user/refresh-token
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM0NDU2LCJleHAiOjE3MjEyMzkyNTZ9.EpdPiuQIta6CSmRA9v2gmUdjxzLqU_1RnfWJ7ikaGTw"
 }
 
 ### 
@@ -56,5 +67,5 @@ DELETE http://localhost:4000/logout
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNTU1NzE2LCJleHAiOjE3MjExNjA1MTZ9.A5YMUzi_OZUOa_gtmqji52-MhrDwlrcJVcBkdRIZjqI"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM0NDU2LCJleHAiOjE3MjEyMzkyNTZ9.EpdPiuQIta6CSmRA9v2gmUdjxzLqU_1RnfWJ7ikaGTw"
 }

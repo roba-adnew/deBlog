@@ -33,9 +33,10 @@ exports.accountCreationPost = asyncHandler(async (req, res, next) => {
 })
 
 exports.loginPost = [
-    passport.authenticate("jwt", { session: false }),
+    passport.authenticate("local", { session: false }),
     asyncHandler(async (req, res, next) => {
         try {
+            
             const user = {
                 id: req.user.id,
                 name: req.user.name,
@@ -56,7 +57,7 @@ exports.loginPost = [
             res.json({ accessToken: accessToken, refreshToken: refreshToken })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
-            res.status(401)
+            res.status(401).json({ message: 'Unauthorized' });
         }
     })
 ]

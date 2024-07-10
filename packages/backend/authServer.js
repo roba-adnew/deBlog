@@ -22,7 +22,7 @@ main();
 
 app.use(express.json())
 app.use(passport.initialize());
-app.use('/', authRouter);
-app.use('/', postRouter);
+app.use('/user', authRouter);
+app.use('/posts', postRouter);
 
 app.listen(4000)
