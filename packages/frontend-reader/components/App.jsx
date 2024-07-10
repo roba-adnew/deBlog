@@ -1,10 +1,11 @@
 import React from 'react';
+import Posts from './Posts'
 
 function App() {
 
   return (
     <>
-      <h1>Were up</h1>
+      <Posts />
     </>
   )
 
