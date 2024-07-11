@@ -8,7 +8,6 @@ function App() {
       <Posts />
     </>
   )
-
 }
 
 export default App

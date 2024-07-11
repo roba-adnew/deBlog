@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import getPosts from '../utils/api'
 
-function Posts({ }) {
+function Post({ post }) {
+    return (
+
+        <div key={post._id}>
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
+            {/* comments section component */}
+        </div>
+    )
+}
+
+function PostFeed({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState(null)
     const [error, setError] = useState(null)
@@ -40,22 +51,16 @@ function Posts({ }) {
 
     console.log('Render state:', { isLoading, posts, error });
 
-    if (!posts) return
+    if (!posts) console.log('issue with post check')
 
     return (
         <div id="allPosts">
-            {posts.map(post => {
-                <div key={post.id}>
-                    <h3>post.title</h3>
-                    <p>post.content</p>
-                </div>
-                // comments section component 
-            })}
+            {posts.map(post => (<Post post={post} />))}
         </div>
     )
 }
 
 
-// Post.propTypes = { postId: PropTypes.array }
+Post.propTypes = { post: PropTypes.object }
 
-export default Posts
+export default PostFeed
