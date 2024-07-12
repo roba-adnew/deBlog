@@ -44,7 +44,7 @@ exports.postCreationPost = (req, res, next) => {
 
 exports.commentsGet = asyncHandler(async (req, res, next) => {
     try {
-        const postId = req.body.postId;
+        const postId = req.params.postId;
         debug(`Attempting to pull comments for ${postId}`)
         const post = await Post
             .findById(postId)
@@ -74,7 +74,7 @@ exports.commentCreationPost = (req, res, next) => {
         asyncHandler(async (req, res, next) => {
             try {
                 const updatedPost = await Post.findByIdAndUpdate(
-                    req.body.postId,
+                    req.params.postId,
                     {
                         $push: {
                             comments: {

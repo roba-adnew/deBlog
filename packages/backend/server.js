@@ -24,7 +24,7 @@ app.use(cors());
 
 app.use(express.json())
 app.use(passport.initialize());
-app.use('/user', authRouter);
-app.use('/posts', postRouter);
+app.use('/api/user', authRouter);
+app.use('/api/posts', postRouter);
 
 app.listen(4000)

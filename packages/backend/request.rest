@@ -1,4 +1,4 @@
-POST http://localhost:4000/signup
+POST http://localhost:4000/api/signup
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:4000/user/login
+POST http://localhost:4000/api/user/login
 Content-Type: application/json 
 
 {
@@ -22,11 +22,11 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:4000/posts
+GET http://localhost:4000/api/posts
 
 ###
 
-POST http://localhost:4000/posts
+POST http://localhost:4000/api/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM1MzE5LCJleHAiOjE3MjA2Mzg5MTl9._mB6q5ISWi1-GYknb0uHlZN0Zh3gTVx567qC6eGTTsw
 Content-Type: application/json
 
@@ -38,27 +38,22 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:4000/posts/comments
-Content-Type: application/json
+GET http://localhost:4000/api/posts/668ed32c763dde0e95eba45d/comments
 
-{
-    "postId": "668ed32c763dde0e95eba45d"
-}
 
 ###
 
-POST http://localhost:4000/posts/comments
+POST http://localhost:4000/api/posts/668ed32c763dde0e95eba45d/comments
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwODA2NzQxLCJleHAiOjE3MjA4MTAzNDF9.N3-EUQVsgdEQjNUBntZopmswlct3HWWQotkTKCKGVZU
 Content-Type: application/json
 
 {
-    "postId": "668ed32c763dde0e95eba45d",
-    "content": "disgusting brotherrrsss"
+    "content": "man I miss that show"
 }
 
 ###
 
-POST http://localhost:4000/user/refresh-token
+POST http://localhost:4000/api/user/refresh-token
 Content-Type: application/json
 
 {
@@ -66,7 +61,7 @@ Content-Type: application/json
 }
 
 ### 
-DELETE http://localhost:4000/logout
+DELETE http://localhost:4000/api/logout
 Content-Type: application/json
 
 {
