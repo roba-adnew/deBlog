@@ -36,17 +36,24 @@ Content-Type: application/json
     "content": "gotta cracks a few greggs to make a tomelette"
 
 }
-
 ###
 
-POST http://localhost:4000/posts/comment
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM0NTMzLCJleHAiOjE3MjA2MzgxMzN9.uj3_JrXvNpv_7D4ePQ_VOGbMjYeiccpKLGV59yhUfw0
+GET http://localhost:4000/posts/comments
 Content-Type: application/json
 
 {
-    "postId": "668da5f319e206281f331a9a",
-    "commentUserId": "6685b8f009a4362bf83f625d",
-    "content": "this is a beaut"
+    "postId": "668ed32c763dde0e95eba45d"
+}
+
+###
+
+POST http://localhost:4000/posts/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwODA2NzQxLCJleHAiOjE3MjA4MTAzNDF9.N3-EUQVsgdEQjNUBntZopmswlct3HWWQotkTKCKGVZU
+Content-Type: application/json
+
+{
+    "postId": "668ed32c763dde0e95eba45d",
+    "content": "disgusting brotherrrsss"
 }
 
 ###

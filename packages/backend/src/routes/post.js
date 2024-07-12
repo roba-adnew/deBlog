@@ -6,6 +6,8 @@ router.get('/', postController.postsGet)
 
 router.post('/', postController.postCreationPost)
 
-router.post('/comment', postController.commentCreationPost)
+router.get('/comments', postController.commentsGet)
+
+router.post('/comments', postController.commentCreationPost)
 
 module.exports = router;
