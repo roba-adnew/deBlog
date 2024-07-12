@@ -9,11 +9,17 @@
     align-items: center;
 }
 
+/* Post formatting */
+
 .post {
     width: 60%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 1.3rem;
     margin: 0.6rem;
+}
+
+.title {
+    margin-bottom: 0px;
 }
 
 .author, .date {
@@ -24,4 +30,44 @@
 
 .content {
     font-size: 0.8rem;
+}
+
+/* Comment formatting */
+.commentSection {
+    background-color: rgb(245, 240, 220);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    width: 100%;
+    text-align: right;
+}
+
+.commentTitle {
+    margin: 0.4rem;
+    font-size: 0.7em;
+    font-weight: 550;
+}
+
+.comment {
+    margin: 0.2rem 0.7rem 0 0;
+}
+
+.comment > .authorDate {
+    font-size: 0.5rem;
+    font-style: italic;
+    margin: 0;
+}
+
+.comment > .content {
+    font-size: 0.6rem;
+}
+
+.commentDivider {
+    color: black;
+    border: none;
+    border-top: 1px solid rgb(186, 182, 166);
+    margin: .2em 0 0 0;
+    width: 90%;
 }
