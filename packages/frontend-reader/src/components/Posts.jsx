@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { format } from 'date-fns'
 import getPosts from '../utils/api'
 
 function Post({ post }) {
     return (
 
-        <div key={post._id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
+        <div key={post._id} className="post" >
+            <h3 className='title'>{post.title}</h3>
+            <p className='author'>{post.user.username}</p>
+            <p className='date'>{format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
+            <p className='content'>{post.content}</p>
             {/* comments section component */}
         </div>
     )
@@ -54,7 +57,7 @@ function PostFeed({ }) {
     if (!posts) console.log('issue with post check')
 
     return (
-        <div id="allPosts">
+        <div id="feed">
             {posts.map(post => (<Post post={post} />))}
         </div>
     )

@@ -1,0 +1,27 @@
+* {
+    font-family: Helvetica;
+}
+
+#feed {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.post {
+    width: 60%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.3rem;
+    margin: 0.6rem;
+}
+
+.author, .date {
+    margin: 3px 0px 3px 0px;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.content {
+    font-size: 0.8rem;
+}
