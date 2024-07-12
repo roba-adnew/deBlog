@@ -5,7 +5,9 @@ const Post = require('../models/post')
 
 exports.postsGet = asyncHandler(async (req, res, next) => {
     try {
-        const posts = await Post.find({});
+        const posts = await Post
+            .find({})
+            .populate('user', 'username');
         debug('Retrieving posts');
         res.json({ posts })
     } catch (err) {
