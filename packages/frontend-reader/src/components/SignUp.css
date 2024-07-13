@@ -1,0 +1,21 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    margin: 5rem
+}
+
+label {
+    display: block
+}
+
+input {
+    margin: 5px
+}
+
+button {
+    align-self: center;
+    width: 70%;
+    margin: 2% 10% 0% 0% 
+}

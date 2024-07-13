@@ -1,12 +1,12 @@
 import React from 'react';
-import Posts from './Components/Posts'
+import Feed from './Components/Feed'
 import './App.css'
 
 function App() {
-
   return (
     <>
-      <Posts />
+      <a href="/sign-up">sign up</a>
+      <Feed />
     </>
   )
 }

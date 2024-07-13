@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes, { array } from 'prop-types'
+import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import { getComments } from '../utils/api'
 
 function Comment({ comment }) {
+    const date = format(new Date(comment.ts), 'MMM-dd')
+
     return (
         <div className='comment'>
-            <p className='authorDate'>{comment.user.username} - {format(new Date(comment.ts), 'MMM-dd')}</p>
+            <p className='authorDate'>{comment.user.username} - {date}</p>
             <p className='content'>{comment.content}</p>
+            <div className="editDelete">
+                <button class='editBtn'>Edit -&nbsp;</button>
+                <button class='deleteBtn'> Delete</button>
+            </div>
         </div>
+    )
+}
+
+function CommentForm() {
+    const [content, setContent] = useState(null)
+    const user = '';
+    return (
+        <form>
+            <input
+                name='content'
+                user={user}>
+            </input>
+            <button>submit</button>
+        </form>
     )
 }
 
@@ -74,11 +94,3 @@ CommentSection.propTypes = { postId: PropTypes.string }
 
 
 export default CommentSection
-
-// funtion commentform({ optional comment id form }) 
-// usestate loading and error 
-// define setloading and error
-// guard clauses for loading and error  
-// return 
-// form 
-// submit button 

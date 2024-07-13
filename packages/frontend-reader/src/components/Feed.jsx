@@ -8,15 +8,14 @@ function Post({ post }) {
     return (
         <div key={post._id} className="post" >
             <h3 className='title'>{post.title}</h3>
-            <p className='author'>{post.user.username}</p>
-            <p className='date'>{format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
+            <p className='author'>{post.user.username} - {format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
             <p className='content'>{post.content}</p>
             <CommentSection postId={post._id} />
         </div>
     )
 }
 
-function PostFeed({ }) {
+function Feed({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState(null)
     const [error, setError] = useState(null)
@@ -69,4 +68,4 @@ function PostFeed({ }) {
 
 Post.propTypes = { post: PropTypes.object }
 
-export default PostFeed
+export default Feed
