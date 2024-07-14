@@ -1,6 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { signUp } from '../utils/authApi'
 import './SignUp.css'
+
+function CreationStatusModal({ creatingFlag, successFlag }) {
+    const dialogRef = useRef(null)
+    const showModal = creatingFlag || successFlag;
+
+    return (
+        <>
+            <dialog ref={dialogRef}>
+                {creatingFlag && 'Creating your account'}
+                {successFlag && 'Account created' }
+                <button>Update to redirect to login</button>
+            </dialog>
+            {showModal && dialogRef.current.showModal()}
+        </>
+    )
+}
 
 function SignUpForm() {
     const [userInfo, setUserInfo] = useState({
@@ -117,8 +133,10 @@ function SignUpForm() {
                     }
                     <button type='submit'>sign-up</button>
                 </form>
-                {creatingAccount && <p>creating account</p>}
-                {accountCreated && <p>account created</p>}
+                <CreationStatusModal 
+                    creatingFlag={creatingAccount}
+                    successFlag={accountCreated} 
+                />
             </div>
         </>
     )
