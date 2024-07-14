@@ -4,7 +4,7 @@ async function signUp(formData) {
         const response = await fetch(
             'http://localhost:4000/api/user/signup', {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json',},
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(formData)
             }
         )
@@ -14,4 +14,18 @@ async function signUp(formData) {
     }
 }
 
-export { signUp } 
+async function login(userLogin) {
+    try {
+        console.log('logging in for', userLogin)
+        const response = await fetch('http://localhost:4000/api/user/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(userLogin)
+        })
+        return response.ok
+    } catch (error) {
+        throw error
+    }
+}
+
+export { signUp, login } 

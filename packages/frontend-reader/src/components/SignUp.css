@@ -15,7 +15,7 @@ input {
     margin: 5px
 }
 
-button {
+#submit {
     align-self: center;
     width: 70%;
     margin: 2% 10% 0% 0% 
@@ -35,4 +35,21 @@ button {
 
 #authorCheck > label {
     margin-top: 0.2rem;
+}
+
+dialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%
+}
+
+#modalButton {
+    align-self: center;
+}
+
+button > a {
+    text-decoration: none;
+    color: black
 }

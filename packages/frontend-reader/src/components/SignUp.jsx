@@ -1,19 +1,30 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { signUp } from '../utils/authApi'
 import './SignUp.css'
 
 function CreationStatusModal({ creatingFlag, successFlag }) {
-    const dialogRef = useRef(null)
-    const showModal = creatingFlag || successFlag;
+    const dialogRef = useRef(null);
+    const showModal = creatingFlag || successFlag
+
+    useEffect(() => {
+        if (!dialogRef.current) {
+            console.log('dialogRef currently null')
+            return
+        }
+        if (showModal) dialogRef.current.showModal();
+        if (!showModal) {
+            console.log('closing')
+            dialogRef.current.close();
+        }
+    }, [showModal])
 
     return (
         <>
             <dialog ref={dialogRef}>
-                {creatingFlag && 'Creating your account'}
-                {successFlag && 'Account created' }
-                <button>Update to redirect to login</button>
+                {creatingFlag && <p>Creating your account</p>}
+                {successFlag && <p>Account created</p>}
+                <button id='modalButton'><a href="/login">login</a></button>
             </dialog>
-            {showModal && dialogRef.current.showModal()}
         </>
     )
 }
@@ -131,13 +142,13 @@ function SignUpForm() {
                         pwdConfExists && !pwdsMatch
                         && <p id='pwValidator'>passwords dont match</p>
                     }
-                    <button type='submit'>sign-up</button>
+                    <button id='submit' type='submit'>sign-up</button>
                 </form>
-                <CreationStatusModal 
+            </div>
+            <CreationStatusModal 
                     creatingFlag={creatingAccount}
                     successFlag={accountCreated} 
                 />
-            </div>
         </>
     )
 }
