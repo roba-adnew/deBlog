@@ -3,14 +3,21 @@ import PropTypes from 'prop-types'
 import './SignUp.css'
 
 function SignUpForm() {
-    const [userInfo, setUserInfo] = useState(null)
+    const [userInfo, setUserInfo] = useState({
+        firstName: '',
+        lastName: '',
+        username: '',
+        password: ''
+    })
 
-    const userTemplate = {
-        firstName: 'first name',
-        lastName: 'last name',
-        username: 'username',
-        password: 'password'
+    function updateUserInfo(e) {
+        setUserInfo({
+            ...userInfo,
+            [e.target.name]: e.target.value
+        })
     }
+
+    console.log(userInfo)
 
     return (
         <>
@@ -19,12 +26,30 @@ function SignUpForm() {
                 <form>
                     <p>sign-up for an account</p>
                     <span>
-                        <input placeholder='first name'></input>
-                        <input placeholder='last name'></input>
+                        <input
+                            text={userInfo.firstName}
+                            placeholder='first name'
+                            onChange={updateUserInfo}
+                        />
+                        <input
+                            text={userInfo.lastName}
+                            placeholder='last name'
+                            onChange={updateUserInfo}
+                        />
                     </span>
-                    <input placeholder='username'></input>
-                    <input placeholder='password'></input>
-                    <input placeholder='re-enter password'></input>
+                    <input
+                        text={userInfo.username}
+                        placeholder='username'
+                        onChange={updateUserInfo}
+                    />
+                    <input
+                        text={userInfo.password}
+                        placeholder='password'
+                        onChange={updateUserInfo}
+                    />
+                    <input
+                        placeholder='re-enter password'
+                    />
                     <button>sign-up</button>
                 </form>
             </div>

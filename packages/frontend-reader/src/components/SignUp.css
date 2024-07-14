@@ -3,6 +3,7 @@ form {
     flex-direction: column;
     align-items: start;
 
+    width: 60%
     margin: 5rem
 }
 
