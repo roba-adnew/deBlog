@@ -1,18 +1,17 @@
 async function signUp(formData) {
     try {
+        console.log('new account form data', {formData})
         const response = await fetch(
             'http://localhost:4000/api/user/signup', {
                 method: 'POST',
-                header: {
-                    'Content-Type': 'application/json',
-                },
+                headers: {'Content-Type': 'application/json',},
                 body: JSON.stringify(formData)
             }
         )
-        const data = response.json()
-        console.log(data)
-        return
+        return response.ok
     } catch (error) {
         throw error
     }
 }
+
+export { signUp } 

@@ -26,3 +26,13 @@ button {
     color: red;
     margin: 0rem 0rem 0rem 1rem;
 }
+
+#authorCheck {
+    display: grid;
+    grid-template-areas: "left right";
+    font-size: 0.9rem;
+}
+
+#authorCheck > label {
+    margin-top: 0.2rem;
+}

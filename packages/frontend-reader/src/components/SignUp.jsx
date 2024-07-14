@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import { signUp } from '../utils/authApi'
 import './SignUp.css'
 
 function SignUpForm() {
@@ -7,45 +7,64 @@ function SignUpForm() {
         firstName: '',
         lastName: '',
         username: '',
-        password: ''
+        password: '',
+        author: false
     })
-    const [passwordsMatch, setPasswordsMatch] = useState(false)
-    const [passwordConfExists, setPasswordConfExists] = useState(false)
-    const [validationMsg, setValidationMsg] = useState('')
+
+    const [pwdsMatch, setPwdsMatch] = useState(false)
+    const [pwdConfExists, setPwdConfExists] = useState(false)
+    const [creatingAccount, setCreatingAccount] = useState(false)
+    const [accountCreated, setAccountCreated] = useState(false)
+    const [error, setError] = useState(null)
 
     function updateUserInfo(e) {
+        const updateValue = e.target.name === 'author' ?
+            e.target.checked : e.target.value
         setUserInfo({
             ...userInfo,
-            [e.target.name]: e.target.value
+            [e.target.name]: updateValue
         })
     }
 
-    function checkPasswordConf(e) {
-            const passwordConfField = e.target
-            if (passwordConfField.name !== 'passwordConf') return
+    function checkPwdConf(e) {
+        const pwdConfField = e.target
+        if (pwdConfField.name !== 'pwdConf') return
 
-            if (passwordConfField.value.length === 0) {
-                setPasswordConfExists(false)
-            }
-            else {
-                setPasswordConfExists(true)
-            }
-    
-            if (userInfo.password !== passwordConfField.value) {
-                setPasswordsMatch(false)
-            } 
-            else {
-                setPasswordsMatch(true)
-            }
+        if (pwdConfField.value.length === 0) { setPwdConfExists(false) }
+        else { setPwdConfExists(true) }
+
+        if (userInfo.password !== pwdConfField.value) { setPwdsMatch(false) }
+        else { setPwdsMatch(true) }
     }
 
+    async function createNewAccount(e) {
+        e.preventDefault();
+        try {
+            setCreatingAccount(true)
+            console.log('Attempting account creation')
+            const accountCreated = await signUp(userInfo);
+            if (accountCreated) {
+                console.log('Account successfully created')
+                setAccountCreated(true)
+            }
+            else {
+                console.log('Account not created')
+            }
+        } catch (err) {
+            setError(err)
+            console.error('Issue creating account:', err)
+        } finally {
+            setCreatingAccount(false)
+        }
+    }
 
-    console.log(`${passwordsMatch}, ${passwordConfExists}`)
+    console.log('Render state:', { userInfo, error, pwdsMatch, pwdConfExists});
+
     return (
         <>
             <a href="/">home</a>
             <div id='signup'>
-                <form>
+                <form onSubmit={createNewAccount} method='POST'>
                     <p>sign-up for an account</p>
                     <span>
                         <input
@@ -74,14 +93,32 @@ function SignUpForm() {
                         onChange={updateUserInfo}
                     />
                     <input
-                        name='passwordConf'
+                        name='pwdConf'
                         placeholder='re-enter password'
-                        onBlur={checkPasswordConf}
+                        onBlur={checkPwdConf}
                     />
-                    {passwordConfExists && !passwordsMatch && 
-                    <p id='pwValidator'>passwords dont match</p>}
-                    <button>sign-up</button>
+                    <div id='authorCheck'>
+                        <input
+                            name='author'
+                            type='checkbox'
+                            onChange={updateUserInfo}
+                        />
+
+                        <label htmlFor='author'>
+                            {userInfo.author ?
+                                'i want to write posts' :
+                                'i just want to read and comment'
+                            }
+                        </label>
+                    </div>
+                    {
+                        pwdConfExists && !pwdsMatch
+                        && <p id='pwValidator'>passwords dont match</p>
+                    }
+                    <button type='submit'>sign-up</button>
                 </form>
+                {creatingAccount && <p>creating account</p>}
+                {accountCreated && <p>account created</p>}
             </div>
         </>
     )

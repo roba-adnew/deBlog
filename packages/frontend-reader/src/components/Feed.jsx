@@ -20,8 +20,6 @@ function Feed({ }) {
     const [posts, setPosts] = useState(null)
     const [error, setError] = useState(null)
 
-    // usestate for comments 
-    //  usestate if using id 
 
     useEffect(() => {
         async function fetchPosts() {
@@ -34,8 +32,8 @@ function Feed({ }) {
                 }
                 setPosts(fetchedPosts)
             } catch (err) {
-                setError(error)
-                console.error(err)
+                setError(err)
+                console.error('Error fetching posts:', err)
             } finally {
                 setIsLoading(false)
             }
