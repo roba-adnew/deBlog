@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { login } from '../utils/authApi'
+import { login as apiLogin } from '../utils/authApi'
 
 function Login() {
     const [userLogin, setUserLogin] = useState({
@@ -21,11 +21,19 @@ function Login() {
         try {
             setLoggingIn(true)
             console.log('logging in')
-            const loggedIn = await login(userLogin)
-            loggedIn ? console.log('logged in') : console.log('failed login')
+            const loggedIn = await apiLogin(userLogin)
+            if (loggedIn) {
+                console.log('logged in')
+            }
+            else {
+                console.log('failed login')
+            }
+            
         } catch (err) {
             setError(err)
             console.error(err)
+        } finally {
+            setLoggingIn(false)
         }
     }
 
@@ -34,27 +42,27 @@ function Login() {
         <>
             <a href="/">home</a>
             <div id='login'>
-            <form onSubmit={login} method='POST'>
-                <p>login</p>
-                <input
-                    text={userLogin.username}
-                    name='username'
-                    placeholder='username'
-                    onChange={updateUserLogin}
-                />
-                <input
-                    text={userLogin.password}
-                    type='password'
-                    name='password'
-                    placeholder='password'
-                    onChange={updateUserLogin}
-                />
-                <button type='submit'>login</button>
-            </form>
-        </div>
-        
+                <form onSubmit={login} method='POST'>
+                    <p>login</p>
+                    <input
+                        text={userLogin.username}
+                        name='username'
+                        placeholder='username'
+                        onChange={updateUserLogin}
+                    />
+                    <input
+                        text={userLogin.password}
+                        type='password'
+                        name='password'
+                        placeholder='password'
+                        onChange={updateUserLogin}
+                    />
+                    <button type='submit'>login</button>
+                </form>
+            </div>
+
         </>
-        
+
     )
 }
 
