@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { signUp } from '../utils/authApi'
-import './SignUp.css'
+import NavBar from './NavBar';
+import '../Styles/SignUp.css'
 
 function CreationStatusModal({ creatingFlag, successFlag }) {
     const dialogRef = useRef(null);
@@ -17,6 +18,8 @@ function CreationStatusModal({ creatingFlag, successFlag }) {
             dialogRef.current.close();
         }
     }, [showModal])
+
+    if (!showModal) return null
 
     return (
         <>
@@ -85,11 +88,11 @@ function SignUpForm() {
         }
     }
 
-    console.log('Render state:', { userInfo, error, pwdsMatch, pwdConfExists});
+    console.log('Render state:', { userInfo, error, pwdsMatch, pwdConfExists });
 
     return (
         <>
-            <a href="/">home</a>
+            <NavBar link1='home' link2='login' />
             <div id='signup'>
                 <form onSubmit={createNewAccount} method='POST'>
                     <p>sign-up for an account</p>
@@ -145,10 +148,10 @@ function SignUpForm() {
                     <button id='submit' type='submit'>sign-up</button>
                 </form>
             </div>
-            <CreationStatusModal 
-                    creatingFlag={creatingAccount}
-                    successFlag={accountCreated} 
-                />
+            <CreationStatusModal
+                creatingFlag={creatingAccount}
+                successFlag={accountCreated}
+            />
         </>
     )
 }

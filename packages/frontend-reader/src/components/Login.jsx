@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { login as apiLogin } from '../utils/authApi'
+import NavBar from './NavBar'
+import '../Styles/Login.css'
 
 function Login() {
     const [userLogin, setUserLogin] = useState({
@@ -28,7 +30,7 @@ function Login() {
             else {
                 console.log('failed login')
             }
-            
+
         } catch (err) {
             setError(err)
             console.error(err)
@@ -40,7 +42,7 @@ function Login() {
     console.log('Render state:', { userLogin, error });
     return (
         <>
-            <a href="/">home</a>
+            <NavBar link1='home' link2='signup' />
             <div id='login'>
                 <form onSubmit={login} method='POST'>
                     <p>login</p>
@@ -60,7 +62,6 @@ function Login() {
                     <button type='submit'>login</button>
                 </form>
             </div>
-
         </>
 
     )

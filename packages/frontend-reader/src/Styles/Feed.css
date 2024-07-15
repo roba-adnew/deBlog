@@ -1,0 +1,94 @@
+#feed {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Post formatting */
+
+.post {
+    width: 60%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.3rem;
+    margin: 0.6rem;
+}
+
+.title {
+    margin-bottom: 0px;
+    font-size: 1rem;
+}
+
+.authorDate {
+    margin: 3px 0px 3px 0px;
+    font-size: 0.7rem;
+    font-style: italic;
+}
+
+.content {
+    font-size: 0.8rem;
+}
+
+/* Comment formatting */
+.commentSection {
+    background-color: rgb(245, 240, 220);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    width: 100%;
+    text-align: right;
+}
+
+.commentTitle {
+    margin: 0.4rem 0.4rem 0rem 0rem;
+    font-size: 0.6em;
+    font-weight: 550;
+    font-style: oblique;
+}
+
+.comment {
+    margin: 0.3rem 0.7rem 0 0;
+}
+
+.comment > .authorDate {
+    font-size: 0.5rem;
+    font-style: italic;
+    margin: 0;
+}
+
+.comment > .content {
+    font-size: 0.6rem;
+}
+
+.commentDivider {
+    color: black;
+    border: none;
+    border-top: 1px solid rgb(186, 182, 166);
+    margin: .2em 0 0 0;
+    width: 95%;
+}
+
+.editDelete {
+    display: none;
+
+}
+
+.editBtn, .deleteBtn {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.5rem;
+    text-decoration: none;
+    outline: none;
+}
+
+.comment:hover .editDelete {
+    display: block;
+}
