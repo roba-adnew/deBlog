@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import { getPosts } from '../utils/postApi'
 import CommentSection from './Comments'
-import NavBar from './NavBar'
 import '../Styles/Feed.css'
 
 function Post({ post }) {
@@ -60,7 +59,6 @@ function Feed({ }) {
 
     return (
         <>
-            <NavBar link1='signup' link2='login' />
             <div id="feed">
                 {posts.map(post => (<Post post={post} />))}
             </div>

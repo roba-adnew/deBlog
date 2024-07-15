@@ -4,7 +4,7 @@ import NavBar from './NavBar'
 import '../Styles/Login.css'
 
 function Login() {
-    const [userLogin, setUserLogin] = useState({
+    const [credentials, setCredentials] = useState({
         username: '',
         password: ''
     })
@@ -13,8 +13,8 @@ function Login() {
 
     function updateUserLogin(e) {
         e.preventDefault();
-        setUserLogin({
-            ...userLogin,
+        setCredentials({
+            ...credentials,
             [e.target.name]: e.target.value
         })
     }
@@ -23,7 +23,7 @@ function Login() {
         try {
             setLoggingIn(true)
             console.log('logging in')
-            const loggedIn = await apiLogin(userLogin)
+            const loggedIn = await apiLogin(credentials)
             if (loggedIn) {
                 console.log('logged in')
             }
@@ -39,7 +39,7 @@ function Login() {
         }
     }
 
-    console.log('Render state:', { userLogin, error });
+    console.log('Render state:', { credentials, error });
     return (
         <>
             <NavBar link1='home' link2='signup' />
@@ -47,13 +47,13 @@ function Login() {
                 <form onSubmit={login} method='POST'>
                     <p>login</p>
                     <input
-                        text={userLogin.username}
+                        text={credentials.username}
                         name='username'
                         placeholder='username'
                         onChange={updateUserLogin}
                     />
                     <input
-                        text={userLogin.password}
+                        text={credentials.password}
                         type='password'
                         name='password'
                         placeholder='password'

@@ -14,13 +14,13 @@ async function signUp(formData) {
     }
 }
 
-async function login(userLogin) {
+async function login(credentials) {
     try {
-        console.log('logging in for', userLogin)
+        console.log('logging in for', credentials)
         const response = await fetch('http://localhost:4000/api/user/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(userLogin)
+            body: JSON.stringify(credentials)
         })
         return response.ok
     } catch (error) {
