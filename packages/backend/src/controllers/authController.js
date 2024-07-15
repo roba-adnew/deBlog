@@ -8,6 +8,7 @@ const User = require('../models/user')
 const RefreshToken = require('../models/refreshToken');
 
 exports.accountCreationPost = asyncHandler(async (req, res, next) => {
+    debug('Received request body: %O', req.body);
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
         if (err) {
             debug(`password hashing failed for ${req.body.username}`)
@@ -27,7 +28,8 @@ exports.accountCreationPost = asyncHandler(async (req, res, next) => {
 
         } catch (err) {
             debug(`Account creation error for ${req.body.username}: %O`, err)
-            return next(err)
+            return res.status(500).json({ message: 'There was an issue creating this account' })
+
         }
     })
 })
@@ -54,7 +56,7 @@ exports.loginPost = [
             })
             const result = await dbRefreshToken.save();
             debug(`DB Refresh Token save results: %O`, result)
-            res.json({ accessToken: accessToken, refreshToken: refreshToken })
+            res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
             res.status(401).json({ message: 'Unauthorized' });

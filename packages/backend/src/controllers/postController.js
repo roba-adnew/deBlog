@@ -56,7 +56,7 @@ exports.commentsGet = asyncHandler(async (req, res, next) => {
                     select: 'username'
                 }
             })
-        debug('Retrieving comments');
+        debug('Retrieving comments: %O', post.comments);
         const comments = post.comments;
         res.json({ comments })
     } catch (err) {
