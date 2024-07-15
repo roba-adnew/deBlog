@@ -2,18 +2,24 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import { getComments } from '../utils/postApi'
+import { useAuth } from '../Contexts/AuthContext'
 
 function Comment({ comment }) {
+    const { user } = useAuth();
     const date = format(new Date(comment.ts), 'MMM-dd')
+    const userIsCommenter = true
 
+    console.log('Render state', user, comment)
     return (
         <div className='comment'>
             <p className='authorDate'>{comment.user.username} - {date}</p>
             <p className='content'>{comment.content}</p>
-            <div className="editDelete">
-                <button class='editBtn'>Edit -&nbsp;</button>
-                <button class='deleteBtn'> Delete</button>
-            </div>
+            {userIsCommenter &&
+                <div className="editDelete">
+                    <button class='editBtn'>Edit -&nbsp;</button>
+                    <button class='deleteBtn'> Delete</button>
+                </div>
+            }
         </div>
     )
 }
@@ -75,13 +81,13 @@ function CommentSection({ postId }) {
     return (
         <div className="commentSection">
             <p className='commentTitle'>Comments</p>
-            <hr class='commentDivider'/>
+            <hr class='commentDivider' />
             {comments.map((comment, i, array) => {
                 const isLast = i === array.length - 1;
                 return (
                     <>
                         <Comment key={comment.id} comment={comment} />
-                        {!isLast && <hr class='commentDivider'/>}
+                        {!isLast && <hr class='commentDivider' />}
                     </>
                 )
             })}
@@ -91,6 +97,5 @@ function CommentSection({ postId }) {
 
 Comment.propTypes = { comment: PropTypes.object }
 CommentSection.propTypes = { postId: PropTypes.string }
-
 
 export default CommentSection

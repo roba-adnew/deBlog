@@ -21,7 +21,7 @@ exports.postCreationPost = (req, res, next) => {
         if (err) return next(err);
         if (!user) return res.status(401).json({ message: 'Unauthorized' })
         req.user = user;
-        debug('User authenticed: %O', req.user)
+        debug('User authenticated: %O', req.user)
         asyncHandler(async (req, res, next) => {
             try {
                 debug('Received request body:', req.body);

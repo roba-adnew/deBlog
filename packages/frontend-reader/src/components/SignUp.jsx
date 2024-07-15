@@ -92,7 +92,6 @@ function SignUpForm() {
 
     return (
         <>
-            <NavBar link1='home' link2='login' />
             <div id='signup'>
                 <form onSubmit={createNewAccount} method='POST'>
                     <p>sign-up for an account</p>

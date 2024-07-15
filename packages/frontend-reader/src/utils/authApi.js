@@ -22,7 +22,7 @@ async function login(credentials) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(credentials)
         })
-        return response.ok
+        return response
     } catch (error) {
         throw error
     }

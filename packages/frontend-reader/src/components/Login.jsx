@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { login as apiLogin } from '../utils/authApi'
+import { useAuth } from '../Contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 import NavBar from './NavBar'
 import '../Styles/Login.css'
 
@@ -10,6 +12,8 @@ function Login() {
     })
     const [loggingIn, setLoggingIn] = useState(false)
     const [error, setError] = useState(null)
+    const navigate = useNavigate();
+    const { updateLogin } = useAuth();
 
     function updateUserLogin(e) {
         e.preventDefault();
@@ -18,18 +22,16 @@ function Login() {
             [e.target.name]: e.target.value
         })
     }
-    async function login(e) {
+    async function handleLogin(e) {
         e.preventDefault();
         try {
             setLoggingIn(true)
             console.log('logging in')
-            const loggedIn = await apiLogin(credentials)
-            if (loggedIn) {
-                console.log('logged in')
-            }
-            else {
-                console.log('failed login')
-            }
+            const response = await apiLogin(credentials)
+            if (response.ok) console.log('logged in')
+            console.log('response', response)
+            updateLogin(response.user, response.accessToken)
+            navigate('/')
 
         } catch (err) {
             setError(err)
@@ -39,12 +41,11 @@ function Login() {
         }
     }
 
-    console.log('Render state:', { credentials, error });
+    console.log('Render state:', { credentials, error, loggingIn });
     return (
         <>
-            <NavBar link1='home' link2='signup' />
             <div id='login'>
-                <form onSubmit={login} method='POST'>
+                <form onSubmit={handleLogin} method='POST'>
                     <p>login</p>
                     <input
                         text={credentials.username}
