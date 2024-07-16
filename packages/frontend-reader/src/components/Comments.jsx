@@ -102,11 +102,29 @@ function CommentSection({ postId }) {
         fetchComments(postId)
     }, [refetch])
 
-    // console.log('Render state:', { isLoading, comments, error });
+    if (!comments || comments.length === 0) return
 
-    if (!comments || comments.length === 0) {
-        // console.log('There are no comments')
-        return
+    function AddCommentForm() {
+        const [adding, setAdding] = useState(false)
+
+        function addComment(e) {
+            e.preventDefault()
+            toggleForm()
+        }
+
+        function toggleForm() {setAdding(!adding)}
+
+
+        return (
+            adding 
+            ? <form onSubmit={addComment} method='POST'>
+                <input 
+
+                />
+                <button>add comment</button>
+            </form>
+            : <button onClick={toggleForm}>add new comment</button>
+        )
     }
 
     return (
@@ -129,6 +147,7 @@ function CommentSection({ postId }) {
                     </>
                 )
             })}
+            <AddCommentForm />
         </div>
     )
 }

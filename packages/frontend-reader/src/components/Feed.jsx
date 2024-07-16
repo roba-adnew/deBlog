@@ -9,7 +9,7 @@ function Post({ post }) {
     return (
         <div className="post" >
             <h3 className='title'>{post.title}</h3>
-            <p className='author'>{post.user.username} - {format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
+            <p className='authorDate'>{post.user.username} - {format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
             <p className='content'>{post.content}</p>
             <CommentSection postId={post._id} />
         </div>
