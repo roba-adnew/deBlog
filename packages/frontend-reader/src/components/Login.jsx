@@ -26,7 +26,6 @@ function Login() {
         try {
             console.log('logging in')
             const response = await apiLogin(credentials)
-            if (response.ok) console.log('logged in')
             console.log('response', response)
             updateLogin(response.user, response.accessToken)
             navigate('/')

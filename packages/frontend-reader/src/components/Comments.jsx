@@ -1,46 +1,85 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { format } from 'date-fns'
-import { getComments } from '../utils/postApi'
-import { useAuth } from '../Contexts/AuthContext'
+import { getComments, editComment as apiEditComment } from '../utils/postApi'
 
-function Comment({ comment }) {
-    const { user } = useAuth();
-    const date = format(new Date(comment.ts), 'MMM-dd')
-    const userIsCommenter = true
+function Comment({ comment, postId, refetch }) {
+    const [editing, setEditing] = useState(false)
+    const user = JSON.parse(localStorage.getItem('user'))
+    const userIsCommenter = !!user && (user._id === comment.user._id);
 
-    // console.log('Render state', user, comment)
+    function CommentDisplay() {
+        const date = format(new Date(comment.ts), 'MMM-dd')
+
+        function toggleForm() {setEditing(true)}
+
+        return (
+            <>
+                <p className='authorDate'>{comment.user.username} - {date}</p>
+                <p className='content' name='content'>{comment.content}</p>
+                {userIsCommenter &&
+                    <div className="editDelete">
+                        <button 
+                            onClick={toggleForm}
+                            className='editBtn'>
+                                Edit -&nbsp;
+                        </button>
+                        
+                        <button className='deleteBtn'> Delete</button>
+                    </div>
+                }
+            </>
+        )
+    }
+
+    function CommentEditForm() {
+        const [content, setContent] = useState(comment.content)
+
+        function updateContent(e) {setContent(e.target.value)}
+
+        async function handleEditSubmission(e) {
+            e.preventDefault()
+            try {
+                console.log('commencing comment edit')
+                const response = 
+                    await apiEditComment(postId, comment._id, content)
+                console.log('response', response)
+                console.log('comment updated')
+                refetch(true)
+            } catch (err) {
+                console.error(err)
+                throw err
+            } finally {
+                setEditing(false)
+            }
+        }
+
+        return (
+            <form onSubmit={handleEditSubmission} method='PUT'>
+                <input
+                    value={content}
+                    name='content'
+                    onChange={updateContent}
+                />
+                <button className='submitEdit'>submit</button>
+            </form>
+        )
+    }
+
     return (
         <div className='comment'>
-            <p className='authorDate'>{comment.user.username} - {date}</p>
-            <p className='content'>{comment.content}</p>
-            {userIsCommenter &&
-                <div className="editDelete">
-                    <button className='editBtn'>Edit -&nbsp;</button>
-                    <button className='deleteBtn'> Delete</button>
-                </div>
+            {editing
+                ? <CommentEditForm />
+                : <CommentDisplay  />
             }
         </div>
-    )
-}
-
-function CommentForm() {
-    const [content, setContent] = useState(null)
-    const user = '';
-    return (
-        <form>
-            <input
-                name='content'
-                user={user}>
-            </input>
-            <button>submit</button>
-        </form>
     )
 }
 
 function CommentSection({ postId }) {
     const [isLoading, setIsLoading] = useState(true)
     const [comments, setComments] = useState(null)
+    const [refetch, setRefetch] = useState(false)
     const [error, setError] = useState(null)
 
     useEffect(() => {
@@ -61,15 +100,7 @@ function CommentSection({ postId }) {
             }
         }
         fetchComments(postId)
-    }, [])
-
-    if (isLoading) {
-        return (
-            <div>
-                Just a moment, we&apos;re just getting this post for you...
-            </div>
-        )
-    }
+    }, [refetch])
 
     // console.log('Render state:', { isLoading, comments, error });
 
@@ -86,9 +117,14 @@ function CommentSection({ postId }) {
                 const isLast = i === array.length - 1;
                 return (
                     <>
-                        <Comment key={comment.id} comment={comment} />
-                        {!isLast && 
-                            <hr key={comment.id}className='commentDivider' />
+                        <Comment 
+                            key={comment._id} 
+                            postId={postId} 
+                            comment={comment} 
+                            refetch={setRefetch}
+                        />
+                        {!isLast &&
+                            <hr key={comment._id} className='commentDivider' />
                         }
                     </>
                 )

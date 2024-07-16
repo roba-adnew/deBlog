@@ -9,8 +9,8 @@ async function signUp(formData) {
             }
         )
         return response.ok
-    } catch (error) {
-        throw error
+    } catch (err) {
+        throw err
     }
 }
 
@@ -24,8 +24,8 @@ async function login(credentials) {
         })
         const data = await response.json()
         return data
-    } catch (error) {
-        throw error
+    } catch (err) {
+        throw err
     }
 }
 
