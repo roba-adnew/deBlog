@@ -8,7 +8,6 @@ const User = require('../models/user')
 const RefreshToken = require('../models/refreshToken');
 
 exports.accountCreationPost = asyncHandler(async (req, res, next) => {
-    debug('Received request body: %O', req.body);
     bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
         if (err) {
             debug(`password hashing failed for ${req.body.username}`)
@@ -28,8 +27,7 @@ exports.accountCreationPost = asyncHandler(async (req, res, next) => {
 
         } catch (err) {
             debug(`Account creation error for ${req.body.username}: %O`, err)
-            return res.status(500).json({ message: 'There was an issue creating this account' })
-
+            return next(err)
         }
     })
 })
@@ -38,13 +36,13 @@ exports.loginPost = [
     passport.authenticate("local", { session: false }),
     asyncHandler(async (req, res, next) => {
         try {
-            
+            debug('authenticated user: %O', req.user)
             const user = {
                 id: req.user.id,
-                name: req.user.name,
+                name: req.user.username,
                 author: req.user.author
             }
-            const accessToken = generateAccessToken(user)
+            const accessToken = generateAccessToken({user})
             const refreshToken = jwt.sign(
                 user,
                 process.env.REFRESH_TOKEN_SECRET,
@@ -56,7 +54,7 @@ exports.loginPost = [
             })
             const result = await dbRefreshToken.save();
             debug(`DB Refresh Token save results: %O`, result)
-            res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken })
+            res.json({ user: req.user, accessToken: accessToken, refreshToken: refreshToken })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
             res.status(401).json({ message: 'Unauthorized' });
