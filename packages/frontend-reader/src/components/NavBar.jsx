@@ -1,22 +1,42 @@
 import React from 'react'
+import { useAuth } from '../Contexts/AuthContext'
+import { useLocation, Link } from 'react-router-dom'
 import '../Styles/NavBar.css'
 
-function NavBar({ link1, link2 }) {
-    function Link({link}) {
-        switch(link) {
-            case 'home': return <a id='homeLink' href="/">home</a>;
-            case 'login': return <a id='loginLink' href="/login">login</a>
-            case 'signup': return <a id='signupLink' href="/sign-up">signup</a>
-        }
+function NavBar() {
+    const { updateLogout } = useAuth();
+    const location = useLocation()
+    const user = JSON.parse(localStorage.getItem('user'))
+    const loggedIn = !!user;
+
+    console.log('location', location.pathname)
+    console.log('user', user)
+
+    if (loggedIn) {return <Link to="/" onClick={updateLogout}>logout</Link>}
+
+    switch (location.pathname) {
+        case '/':
+            return (
+                <div id='navbar'>
+                    <Link to="/sign-up">signup</Link>
+                    <Link to="/login">login</Link>
+                </div>
+            )
+        case '/login':
+            return (
+                <div id='navbar'>
+                    <Link to="/">home</Link>
+                    <Link to="/signup">signup</Link>
+                </div>
+            )
+        case '/sign-up':
+            return (
+                <div id='navbar'>
+                    <Link to="/">home</Link>
+                    <Link to="/login">login</Link>
+                </div>
+            )  
     }
-
-
-    return (
-        <div id='navbar'>
-            <Link link={link1} />
-            <Link link={link2} />
-        </div>
-    )
 }
 
 export default NavBar;

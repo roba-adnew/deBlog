@@ -22,10 +22,15 @@ async function login(credentials) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(credentials)
         })
-        return response
+        const data = await response.json()
+        return data
     } catch (error) {
         throw error
     }
+}
+
+async function logout() {
+    
 }
 
 export { signUp, login } 

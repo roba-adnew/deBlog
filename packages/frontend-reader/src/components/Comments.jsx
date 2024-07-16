@@ -9,15 +9,15 @@ function Comment({ comment }) {
     const date = format(new Date(comment.ts), 'MMM-dd')
     const userIsCommenter = true
 
-    console.log('Render state', user, comment)
+    // console.log('Render state', user, comment)
     return (
         <div className='comment'>
             <p className='authorDate'>{comment.user.username} - {date}</p>
             <p className='content'>{comment.content}</p>
             {userIsCommenter &&
                 <div className="editDelete">
-                    <button class='editBtn'>Edit -&nbsp;</button>
-                    <button class='deleteBtn'> Delete</button>
+                    <button className='editBtn'>Edit -&nbsp;</button>
+                    <button className='deleteBtn'> Delete</button>
                 </div>
             }
         </div>
@@ -48,7 +48,7 @@ function CommentSection({ postId }) {
             try {
                 setIsLoading(true)
                 const fetchedComments = await getComments(postId);
-                console.log('Fetched comments:', fetchedComments);
+                // console.log('Fetched comments:', fetchedComments);
                 if (!fetchedComments || fetchedComments.length === 0) {
                     throw new Error('failed to load comments')
                 }
@@ -71,23 +71,25 @@ function CommentSection({ postId }) {
         )
     }
 
-    console.log('Render state:', { isLoading, comments, error });
+    // console.log('Render state:', { isLoading, comments, error });
 
     if (!comments || comments.length === 0) {
-        console.log('There are no comments')
+        // console.log('There are no comments')
         return
     }
 
     return (
         <div className="commentSection">
             <p className='commentTitle'>Comments</p>
-            <hr class='commentDivider' />
+            <hr className='commentDivider' />
             {comments.map((comment, i, array) => {
                 const isLast = i === array.length - 1;
                 return (
                     <>
                         <Comment key={comment.id} comment={comment} />
-                        {!isLast && <hr class='commentDivider' />}
+                        {!isLast && 
+                            <hr key={comment.id}className='commentDivider' />
+                        }
                     </>
                 )
             })}

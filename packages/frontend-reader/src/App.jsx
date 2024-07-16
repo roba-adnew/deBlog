@@ -7,7 +7,7 @@ import './App.css'
 function App() {
   return (
     <AuthProvider>
-      <NavBar link1='signup' link2='login' />
+      <NavBar />
       <Outlet />
     </AuthProvider>
   )

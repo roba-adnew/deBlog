@@ -7,7 +7,7 @@ import '../Styles/Feed.css'
 
 function Post({ post }) {
     return (
-        <div key={post._id} className="post" >
+        <div className="post" >
             <h3 className='title'>{post.title}</h3>
             <p className='author'>{post.user.username} - {format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
             <p className='content'>{post.content}</p>
@@ -50,7 +50,7 @@ function Feed({ }) {
         )
     }
 
-    console.log('Render state:', { isLoading, posts, error });
+    // console.log('Render state:', { isLoading, posts, error });
 
     if (!posts || posts.length === 0) {
         console.log('issue with post check')
@@ -60,7 +60,7 @@ function Feed({ }) {
     return (
         <>
             <div id="feed">
-                {posts.map(post => (<Post post={post} />))}
+                {posts.map(post => (<Post post={post} key={post._id}/>))}
             </div>
         </>
     )
