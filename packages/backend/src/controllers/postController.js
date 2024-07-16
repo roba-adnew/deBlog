@@ -42,43 +42,6 @@ exports.postCreationPost = (req, res, next) => {
     })(req, res, next)
 }
 
-exports.commentEditPost = (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json({ message: 'Unauthorized' })
-        req.user = user;
-        debug('User authenticated: %O', req.user)
-        asyncHandler(async (req, res, next) => {
-            try {
-                const { postId, commentId, newContent } = req.body;
-                debug('Received request body:', req.body);
-
-                const post = await Post.findById(postId);
-                debug('queried post: %O', post)
-                if (!post) throw new Error('Post not found');
-
-                const comment = post.comments.id(commentId);
-                debug('subsequent comment: %O', comment)
-
-                const prevTs = comment.ts;
-                const prevContent = comment.content;
-
-                if (!comment) throw new Error('Comment not found');
-
-                comment.content = newContent;
-                comment.ts = Date.now();
-                comment.edits.push({ts: prevTs,content: prevContent});
-
-                await post.save();
-                res.status(201).json({ message: 'Comment updated successfully', comment });
-            } catch (err) {
-                debug('Error updating comment:', err);
-                throw err;
-            }
-        })(req, res, next)
-    })(req, res, next)
-}
-
 exports.commentsGet = asyncHandler(async (req, res, next) => {
     try {
         const postId = req.params.postId;
@@ -130,6 +93,43 @@ exports.commentCreationPost = (req, res, next) => {
             } catch (err) {
                 debug(`Comment post  error: %O`, err)
                 return next(err)
+            }
+        })(req, res, next)
+    })(req, res, next)
+}
+
+exports.commentEditPut = (req, res, next) => {
+    passport.authenticate("jwt", { session: false }, (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return res.status(401).json({ message: 'Unauthorized' })
+        req.user = user;
+        debug('User authenticated: %O', req.user)
+        asyncHandler(async (req, res, next) => {
+            try {
+                const { postId, commentId, newContent } = req.body;
+                debug('Received request body:', req.body);
+
+                const post = await Post.findById(postId);
+                debug('queried post: %O', post)
+                if (!post) throw new Error('Post not found');
+
+                const comment = post.comments.id(commentId);
+                debug('subsequent comment: %O', comment)
+
+                const prevTs = comment.ts;
+                const prevContent = comment.content;
+
+                if (!comment) throw new Error('Comment not found');
+
+                comment.content = newContent;
+                comment.ts = Date.now();
+                comment.edits.push({ts: prevTs,content: prevContent});
+
+                await post.save();
+                res.status(201).json({ message: 'Comment updated successfully', comment });
+            } catch (err) {
+                debug('Error updating comment:', err);
+                throw err;
             }
         })(req, res, next)
     })(req, res, next)

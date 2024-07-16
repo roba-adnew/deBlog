@@ -10,6 +10,6 @@ router.get('/:postId/comments', postController.commentsGet)
 
 router.post('/:postId/comments', postController.commentCreationPost)
 
-router.post('/:postId/comments/edit', postController.commentEditPost)
+router.put('/:postId/comments/edit', postController.commentEditPut)
 
 module.exports = router;
