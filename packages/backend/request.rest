@@ -38,7 +38,7 @@ Content-Type: application/json
 }
 ###
 
-POST http://localhost:4000/api/posts/668ed32c763dde0e95eba45d/comments/edit
+PUT http://localhost:4000/api/posts/668ed32c763dde0e95eba45d/comments/edit
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY4NWI4ZjAwOWE0MzYyYmY4M2Y2MjVkIiwibmFtZSI6InRvYmEiLCJhdXRob3IiOnRydWV9LCJpYXQiOjE3MjExNTg0NTYsImV4cCI6MTcyMTE2MjA1Nn0.3JX2zy8vCYl4NftI00SO3V6qZwXrfYCtmiDz2lKzsg0
 Content-Type: application/json
 

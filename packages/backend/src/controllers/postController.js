@@ -69,16 +69,16 @@ exports.commentCreationPost = (req, res, next) => {
     passport.authenticate("jwt", { session: false }, (err, user, info) => {
         if (err) return next(err);
         if (!user) return res.status(401).json({ message: 'Unauthorized' })
-        req.user = user;
-        debug('User authenticated: %O', req.user)
+        debug('User authenticated: %O', user)
         asyncHandler(async (req, res, next) => {
             try {
+                debug('content', req.body)
                 const updatedPost = await Post.findByIdAndUpdate(
                     req.params.postId,
                     {
                         $push: {
                             comments: {
-                                user: req.user.id,
+                                user: user.user.id,
                                 content: req.body.content
                             }
                         }
@@ -88,8 +88,6 @@ exports.commentCreationPost = (req, res, next) => {
                 if (!updatedPost) throw new Error('Post not found')
                 debug('Comment added: %O', updatedPost)
                 res.status(201).json({ message: 'Comment created' })
-                return updatedPost
-
             } catch (err) {
                 debug(`Comment post  error: %O`, err)
                 return next(err)
@@ -106,7 +104,8 @@ exports.commentEditPut = (req, res, next) => {
         debug('User authenticated: %O', req.user)
         asyncHandler(async (req, res, next) => {
             try {
-                const { postId, commentId, newContent } = req.body;
+                const postId = req.params.postId
+                const { commentId, newContent } = req.body;
                 debug('Received request body:', req.body);
 
                 const post = await Post.findById(postId);
