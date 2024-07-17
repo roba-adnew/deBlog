@@ -1,3 +1,5 @@
+import { refreshToken } from './authApi'
+
 async function getPosts() {
     try {
         const response = await fetch('http://localhost:4000/api/posts');
@@ -22,17 +24,9 @@ async function getComments(postId) {
 
 async function editComment(postId, commentId, newContent) {
     const body = { commentId, newContent}
-    const token = JSON.parse(localStorage.getItem('token'))
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments/edit`, {
-            method: 'PUT',
-            headers: { 
-                'Authorization' : `Bearer ${token}`,
-                'Content-type' : 'application/json' 
-            },
-            body: JSON.stringify(body)
-        })
-        const data = await response.json();
+        const url = `http://localhost:4000/api/posts/${postId}/comments/edit`
+        const data = await fetchWithToken(url, 'PUT', body)
         return data
     } catch (err) {
         throw err
@@ -41,20 +35,31 @@ async function editComment(postId, commentId, newContent) {
 
 async function addComment(postId, content){
     const body = { content }
-    const token = JSON.parse(localStorage.getItem('token'))
-    console.log('body', body)
     try {
-        const response = await fetch(`http://localhost:4000/api/posts/${postId}/comments`, {
-            method: 'POST',
-            headers: { 
-                'Authorization' : `Bearer ${token}`,
-                'Content-type' : 'application/json' 
-            },
-            body: JSON.stringify(body)
-        })
-        const data = await response.json();
+        const url = `http://localhost:4000/api/posts/${postId}/comments`
+        const data = await fetchWithToken(url, 'POST', body) 
         return data
     } catch (err) {
+        throw err
+    }
+}
+
+async function fetchWithToken(url, method, body) {
+    let accessToken = JSON.parse(localStorage.getItem('token'))
+   
+    try {
+        if (new Date(accessToken.expiresAt).getTime() < Date.now()){
+            await refreshToken()
+            accessToken = JSON.parse(localStorage.getItem('token'))
+        }
+        const options = { method , headers: {}, body: JSON.stringify(body)}
+        options.headers['Authorization'] = `Bearer ${accessToken.token}`
+        options.headers['Content-type'] = 'application/json'
+        const response = await fetch(url, options)
+        const data = await response.json()
+        return data
+    } catch (err) {
+        console.error(err)
         throw err
     }
 }

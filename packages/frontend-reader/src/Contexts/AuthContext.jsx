@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../utils/authApi'
+import { deleteRefreshToken } from '../utils/authApi'
 
 const AuthContext = createContext(null)
 
@@ -15,7 +15,7 @@ function AuthProvider({ children }) {
         const user = JSON.parse(localStorage.getItem('user'))
         try {
             console.log('starting logout process')
-            const result = await logout(user._id)
+            const result = await deleteRefreshToken(user._id)
             console.log('logout result:', result)
             localStorage.removeItem('user')
             localStorage.removeItem('token')
