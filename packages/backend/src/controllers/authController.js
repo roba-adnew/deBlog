@@ -54,7 +54,7 @@ exports.loginPost = [
             })
             const result = await dbRefreshToken.save();
             debug(`DB Refresh Token save results: %O`, result)
-            res.json({ user: req.user, accessToken: accessToken, expiresAt: refreshToken })
+            res.json({ user: req.user, accessToken })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
             res.status(401).json({ message: 'Unauthorized' });
@@ -118,7 +118,7 @@ exports.refreshToken = asyncHandler(async (req, res) => {
                         .json({ message: 'Error verifying refresh token' })
                 }
                 const accessToken = generateAccessToken(userDetails)
-                return res.json({ accessToken: accessToken })
+                return res.json({ accessToken })
             }
         )
     } catch (err) {
@@ -148,5 +148,10 @@ exports.logoutPost = asyncHandler(async (req, res) => {
 })
 
 function generateAccessToken(user) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+    const oneHourMS = 1 * 60 * 60 * 1000;
+    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+    return {
+        token,
+        expiresAt: Date.now() + oneHourMS
+    }
 }

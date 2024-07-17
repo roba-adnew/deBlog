@@ -69,16 +69,16 @@ exports.commentCreationPost = (req, res, next) => {
     passport.authenticate("jwt", { session: false }, (err, user, info) => {
         if (err) return next(err);
         if (!user) return res.status(401).json({ message: 'Unauthorized' })
-        debug('User authenticated: %O', user)
         asyncHandler(async (req, res, next) => {
             try {
+                debug('User authenticated: %O', user)
                 debug('content', req.body)
                 const updatedPost = await Post.findByIdAndUpdate(
                     req.params.postId,
                     {
                         $push: {
                             comments: {
-                                user: user.user.id,
+                                user: user.id,
                                 content: req.body.content
                             }
                         }
