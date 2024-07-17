@@ -23,10 +23,78 @@
     margin: 3px 0px 3px 0px;
     font-size: 0.7rem;
     font-style: italic;
+    text-decoration: underline 0.03rem;
 }
 
 .content {
     font-size: 0.8rem;
+}
+
+.addCommentButton {
+    background-color: rgb(220, 215, 192);
+    text-align: center;
+    font-size: 0.7rem;
+    font-style: italic;
+    font-weight: 500;
+    height: 1.5rem;
+    line-height: 1.5rem;
+}
+
+/* Add and edit comment forms  */
+
+.editCommentDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    height: 2.9rem;
+    margin-right: 0rem;
+}
+
+.editCommentForm > input {  
+    background-color: rgb(245, 240, 220);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    width: 87%;
+    margin-bottom: 0.2rem;
+    text-align: right;
+    font-size: 0.7rem;
+}
+
+.addCommentDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: rgb(220, 215, 192);
+    height: 2.9rem;
+}
+
+.addCommentForm > input {  
+    background-color: rgb(245, 240, 220);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    width: 87%;
+    margin-bottom: 0.2rem;
+    text-align: right;
+    font-size: 0.7rem;
+}
+
+.formBtnsDiv {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 0.6rem;
+    margin-bottom: 0.2rem;
+}
+
+.addBtn, .cancelBtn {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.6rem;
+    text-decoration: none;
+    outline: none;
 }
 
 /* Comment formatting */
@@ -60,6 +128,7 @@
 
 .comment > .content {
     font-size: 0.6rem;
+    margin: 0.3rem 0rem 0rem
 }
 
 .commentDivider {
@@ -72,7 +141,7 @@
 
 .editDelete {
     display: none;
-
+    margin-top: 0px;
 }
 
 .editBtn, .deleteBtn {

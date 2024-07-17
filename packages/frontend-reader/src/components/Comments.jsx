@@ -8,10 +8,11 @@ function Comment({ user, comment, postId, refetch }) {
     const loggedIn = !!user
     const userIsCommenter = loggedIn && (user._id === comment.user._id);
 
+    function toggleForm() { setEditing(!editing) }
+
+
     function CommentDisplay() {
         const date = format(new Date(comment.ts), 'MMM-dd')
-
-        function toggleForm() { setEditing(true) }
 
         return (
             <>
@@ -24,7 +25,6 @@ function Comment({ user, comment, postId, refetch }) {
                             className='editBtn'>
                             Edit -&nbsp;
                         </button>
-
                         <button className='deleteBtn'> Delete</button>
                     </div>
                 }
@@ -50,18 +50,27 @@ function Comment({ user, comment, postId, refetch }) {
                 console.error(err)
                 throw err
             } finally {
-                setEditing(false)
+                toggleForm()
             }
         }
 
         return (
-            <form onSubmit={handleEditSubmission} method='PUT'>
+            <form
+                className='addCommentForm'
+                onSubmit={handleEditSubmission}
+                method='PUT'
+            >
                 <input
                     value={content}
                     name='content'
                     onChange={updateContent}
                 />
-                <button className='submitEdit'>submit</button>
+                <div className='formBtnsDiv'>
+                    <button className='addBtn'>Submit -&nbsp;</button>
+                    <button className='cancelBtn' onClick={toggleForm}>
+                        Cancel
+                    </button>
+                </div>
             </form>
         )
     }
@@ -126,7 +135,7 @@ function CommentSection({ postId }) {
             } finally {
                 toggleForm()
             }
-            
+
         }
 
         function updateContent(e) { setContent(e.target.value) }
@@ -135,15 +144,24 @@ function CommentSection({ postId }) {
 
         return (
             adding
-                ? <form onSubmit={handleSubmission} method='POST'>
-                    <input
-                        value={content}
-                        onChange={updateContent}
-                    />
-                    <button>add comment</button>
-                    <button onClick={toggleForm}>cancel</button>
-                </form>
-                : <button onClick={toggleForm}>add new comment</button>
+                ? <div className='addCommentDiv'>
+                    <form class='addCommentForm' onSubmit={handleSubmission} method='POST'>
+                        <input
+                            value={content}
+                            onChange={updateContent}
+                        />
+                        <div className='formBtnsDiv'>
+                            <button className='addBtn'>Add Comment -&nbsp;</button>
+                            <button className='cancelBtn' onClick={toggleForm}>
+                                Cancel
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                : <div className='addCommentButton' onClick={toggleForm}>
+                    + add new comment
+                </div>
         )
     }
 
