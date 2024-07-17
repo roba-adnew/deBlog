@@ -29,8 +29,20 @@ async function login(credentials) {
     }
 }
 
-async function logout() {
-    
+async function logout(userId) {
+    const body = { userId }
+    try {
+        console.log('making logout post request')
+        const response = await fetch('http://localhost:4000/api/user/logout', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        })
+        const data = await response.json()
+        return data
+    } catch (err) {
+        throw err
+    }
 }
 
-export { signUp, login } 
+export { signUp, login, logout } 

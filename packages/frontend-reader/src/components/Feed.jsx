@@ -19,8 +19,6 @@ function Post({ post }) {
 function Feed({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState(null)
-    const [error, setError] = useState(null)
-
 
     useEffect(() => {
         async function fetchPosts() {
@@ -33,7 +31,6 @@ function Feed({ }) {
                 }
                 setPosts(fetchedPosts)
             } catch (err) {
-                setError(err)
                 console.error('Error fetching posts:', err)
             } finally {
                 setIsLoading(false)
@@ -49,8 +46,6 @@ function Feed({ }) {
             </div>
         )
     }
-
-    // console.log('Render state:', { isLoading, posts, error });
 
     if (!posts || posts.length === 0) {
         console.log('issue with post check')

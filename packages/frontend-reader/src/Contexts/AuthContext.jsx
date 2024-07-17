@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../utils/authApi'
 
 const AuthContext = createContext(null)
 
@@ -10,10 +11,21 @@ function AuthProvider({ children }) {
         localStorage.setItem('token', JSON.stringify(accessToken))
     }
 
-    function updateLogout() {
-        localStorage.removeItem('user')
-        localStorage.removeItem('token')
-        navigate('/')
+    async function updateLogout() {
+        const user = JSON.parse(localStorage.getItem('user'))
+        try {
+            console.log('starting logout process')
+            const result = await logout(user._id)
+            console.log('logout result:', result)
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
+        } catch (err) {
+            console.error(err)
+            throw err
+        } finally {
+            navigate('/')
+        }
+      
     }
 
     const contextData = { updateLogin, updateLogout }

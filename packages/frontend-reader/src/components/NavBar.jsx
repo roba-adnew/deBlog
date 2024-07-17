@@ -9,9 +9,6 @@ function NavBar() {
     const user = JSON.parse(localStorage.getItem('user'))
     const loggedIn = !!user;
 
-    console.log('location', location.pathname)
-    console.log('user', user)
-
     if (loggedIn) {return <Link to="/" onClick={updateLogout}>logout</Link>}
 
     switch (location.pathname) {
