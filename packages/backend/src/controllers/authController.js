@@ -64,12 +64,14 @@ exports.loginPost = [
 
 exports.refreshToken = asyncHandler(async (req, res) => {
     try {
-        const refreshToken = req.body.refreshToken;
-        if (!refreshToken) return res.sendStatus(401);
+        const userId = req.body.userId;
+        if (!userId) return res.sendStatus(401);
         debug('refresh token extracted')
 
-        const dbToken = await RefreshToken.findOne({ token: refreshToken })
-        if (!dbToken) return res.sendStatus(403);
+        const dbTokenEntry = await RefreshToken.findOne({ userId: userId })
+        if (!dbTokenEntry) return res.sendStatus(403);
+        
+        const refreshToken = dbTokenEntry.token;
         debug('refresh token identified')
 
         jwt.verify(
@@ -97,18 +99,19 @@ exports.refreshToken = asyncHandler(async (req, res) => {
 })
 
 exports.logoutPost = asyncHandler(async (req, res) => {
-    const refreshToken = req.body.token;
+    const userId = req.body.userId;
     try {
-        const query = { token: refreshToken }
+        const query = { userId: userId }
         debug(query)
-        const deleted = await RefreshToken.findOneAndDelete(query).exec()
-        if (!deleted) {
-            debug('Deleted reads', deleted)
+        const result = await RefreshToken.deleteMany(query)
+        if (result.deletedCount === 0) {
+            debug('Deleted reads: %O', result)
             return res
                 .status(404)
                 .json({ message: 'Refresh token unavailable' })
         }
-        res.sendStatus(200).json({ message: 'Logged out successfully' })
+        result.deletedCount > 0 && debug('Multiple refresh tokens were stored: %O', result)
+        res.status(200).json({ message: 'Logged out successfully', result: result })
     } catch (err) {
         debug('Came across the following error logging out: %O', err)
         res.status(500).json({ message: 'An unexpected error occurred' });

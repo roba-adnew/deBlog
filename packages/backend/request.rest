@@ -1,3 +1,4 @@
+# Signup
 POST http://localhost:4000/api/user/signup
 Content-Type: application/json
 
@@ -10,7 +11,7 @@ Content-Type: application/json
 }
 
 ###
-
+# Login
 POST http://localhost:4000/api/user/login
 Content-Type: application/json 
 
@@ -21,11 +22,11 @@ Content-Type: application/json
 }
 
 ###
-
+# Load blog posts 
 GET http://localhost:4000/api/posts
 
 ###
-
+# Write a blog post
 POST http://localhost:4000/api/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM1MzE5LCJleHAiOjE3MjA2Mzg5MTl9._mB6q5ISWi1-GYknb0uHlZN0Zh3gTVx567qC6eGTTsw
 Content-Type: application/json
@@ -37,7 +38,7 @@ Content-Type: application/json
 
 }
 ###
-
+# Edit a comment
 PUT http://localhost:4000/api/posts/668ed32c763dde0e95eba45d/comments/edit
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY4NWI4ZjAwOWE0MzYyYmY4M2Y2MjVkIiwibmFtZSI6InRvYmEiLCJhdXRob3IiOnRydWV9LCJpYXQiOjE3MjExNTg0NTYsImV4cCI6MTcyMTE2MjA1Nn0.3JX2zy8vCYl4NftI00SO3V6qZwXrfYCtmiDz2lKzsg0
 Content-Type: application/json
@@ -49,7 +50,7 @@ Content-Type: application/json
 }
 
 ###
-
+# Write a comment
 POST http://localhost:4000/api/posts/668ed32c763dde0e95eba45d/comments
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwODA2NzQxLCJleHAiOjE3MjA4MTAzNDF9.N3-EUQVsgdEQjNUBntZopmswlct3HWWQotkTKCKGVZU
 Content-Type: application/json
@@ -59,26 +60,19 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:4000/api/posts/668ed32c763dde0e95eba45d/comments
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwODA2NzQxLCJleHAiOjE3MjA4MTAzNDF9.N3-EUQVsgdEQjNUBntZopmswlct3HWWQotkTKCKGVZU
-Content-Type: application/json
-
-{
-    "content": "man I miss that show"
-}
-
-
+# Get a new access token
 POST http://localhost:4000/api/user/refresh-token
 Content-Type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM0NDU2LCJleHAiOjE3MjEyMzkyNTZ9.EpdPiuQIta6CSmRA9v2gmUdjxzLqU_1RnfWJ7ikaGTw"
+    "userId": "6685b8f009a4362bf83f625d"
 }
 
 ### 
-DELETE http://localhost:4000/api/logout
+# Delete current refresh tokens
+DELETE http://localhost:4000/api/user/logout
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsImF1dGhvciI6dHJ1ZSwiaWF0IjoxNzIwNjM0NDU2LCJleHAiOjE3MjEyMzkyNTZ9.EpdPiuQIta6CSmRA9v2gmUdjxzLqU_1RnfWJ7ikaGTw"
+    "userId": "6685b8f009a4362bf83f625d"
 }
