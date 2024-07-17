@@ -42,7 +42,7 @@ exports.loginPost = [
                 name: req.user.username,
                 author: req.user.author
             }
-            const accessToken = generateAccessToken({user})
+            const accessToken = generateAccessToken(user)
             const refreshToken = jwt.sign(
                 user,
                 process.env.REFRESH_TOKEN_SECRET,
@@ -54,7 +54,7 @@ exports.loginPost = [
             })
             const result = await dbRefreshToken.save();
             debug(`DB Refresh Token save results: %O`, result)
-            res.json({ user: req.user, accessToken: accessToken, refreshToken: refreshToken })
+            res.json({ user: req.user, accessToken: accessToken, expiresAt: refreshToken })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
             res.status(401).json({ message: 'Unauthorized' });
@@ -64,12 +64,41 @@ exports.loginPost = [
 
 exports.refreshToken = asyncHandler(async (req, res) => {
     try {
-        const userId = req.body.userId;
-        if (!userId) return res.sendStatus(401);
+        if (!req.body.user) return res.sendStatus(401);
+        const user = req.body.user;
+        
         debug('refresh token extracted')
 
-        const dbTokenEntry = await RefreshToken.findOne({ userId: userId })
+        const dbTokenEntry = await RefreshToken.findOne({ userId: user._id })
         if (!dbTokenEntry) return res.sendStatus(403);
+
+        const expirationDate = new Date(dbTokenEntry.expiresAt);
+
+        if (expirationDate < Date.now()) {
+            debug('Current refresh token is expired')
+            const query = { userId: user._id }
+            const deleteResult = await RefreshToken.deleteMany(query)
+            debug('Deleting refresh token on access token refresh %O:'
+                , deleteResult)
+            
+            const userDetails = {
+                id: user._id,
+                name: user.name,
+                author: user.author
+            }
+            const accessToken = generateAccessToken(userDetails)
+            const refreshToken = jwt.sign(
+                userDetails,
+                process.env.REFRESH_TOKEN_SECRET,
+                { expiresIn: '7d' }
+            )
+            const dbRefreshToken = new RefreshToken({
+                token: refreshToken,
+                userId: user._id
+            })
+            const result = await dbRefreshToken.save();
+            return res.json({ accessToken: accessToken })
+        }
         
         const refreshToken = dbTokenEntry.token;
         debug('refresh token identified')
@@ -89,7 +118,7 @@ exports.refreshToken = asyncHandler(async (req, res) => {
                         .json({ message: 'Error verifying refresh token' })
                 }
                 const accessToken = generateAccessToken(userDetails)
-                res.json({ accessToken: accessToken })
+                return res.json({ accessToken: accessToken })
             }
         )
     } catch (err) {
