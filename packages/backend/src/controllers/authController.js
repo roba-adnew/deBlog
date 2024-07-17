@@ -72,7 +72,7 @@ exports.refreshToken = asyncHandler(async (req, res) => {
         const dbTokenEntry = await RefreshToken.findOne({ userId: user._id })
         if (!dbTokenEntry) return res.sendStatus(403);
 
-        const expirationDate = new Date(dbTokenEntry.expiresAt);
+        const expirationDate = new Date(dbTokenEntry.expiresAt).getTime();
 
         if (expirationDate < Date.now()) {
             debug('Current refresh token is expired')
