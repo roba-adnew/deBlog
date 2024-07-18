@@ -23,10 +23,11 @@ async function getComments(postId) {
 }
 
 async function editComment(postId, commentId, newContent) {
+    const url = `http://localhost:4000/api/posts/${postId}/comments/edit`
+    const method = 'POST'
     const body = { commentId, newContent}
     try {
-        const url = `http://localhost:4000/api/posts/${postId}/comments/edit`
-        const response = await fetchWithToken(url, 'PUT', body)
+        const response = await fetchWithToken(url, method, body)
         const data = await response.json()
         return data
     } catch (err) {
@@ -36,9 +37,10 @@ async function editComment(postId, commentId, newContent) {
 
 async function addComment(postId, content){
     const body = { content }
+    const method = 'POST'
+    const url = `http://localhost:4000/api/posts/${postId}/comments`
     try {
-        const url = `http://localhost:4000/api/posts/${postId}/comments`
-        const response = await fetchWithToken(url, 'POST', body) 
+        const response = await fetchWithToken(url, method, body) 
         const data = await response.json()
         return data
     } catch (err) {

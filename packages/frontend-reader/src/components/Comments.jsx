@@ -145,7 +145,7 @@ function CommentSection({ postId }) {
         return (
             adding
                 ? <div className='addCommentDiv'>
-                    <form class='addCommentForm' onSubmit={handleSubmission} method='POST'>
+                    <form className='addCommentForm' onSubmit={handleSubmission} method='POST'>
                         <input
                             value={content}
                             onChange={updateContent}
