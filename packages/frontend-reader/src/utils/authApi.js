@@ -86,8 +86,8 @@ async function fetchWithToken(url, method, body) {
             },
             body: JSON.stringify(body)
         }
-
-        const tokenExpired = new Date(accessToken.expiresAt).getTime() < Date.now()
+        const tokenExpired = 
+        new Date(accessToken.expiresAt).getTime() < Date.now()
 
         if (tokenExpired) {
             await getNewAccessToken()
