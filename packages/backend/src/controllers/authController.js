@@ -66,11 +66,10 @@ exports.refreshToken = asyncHandler(async (req, res) => {
     try {
         if (!req.body.user) return res.sendStatus(401);
         const user = req.body.user;
-        
-        debug('refresh token extracted')
-
+        debug('user: %', user)
         const dbTokenEntry = await RefreshToken.findOne({ userId: user._id })
         if (!dbTokenEntry) return res.sendStatus(403);
+        debug('refresh token extracted: %O', dbTokenEntry)
 
         const expirationDate = new Date(dbTokenEntry.expiresAt).getTime();
 
@@ -118,7 +117,7 @@ exports.refreshToken = asyncHandler(async (req, res) => {
                         .json({ message: 'Error verifying refresh token' })
                 }
                 const accessToken = generateAccessToken(userDetails)
-                return res.json({ accessToken })
+                return res.json(accessToken)
             }
         )
     } catch (err) {
@@ -139,8 +138,11 @@ exports.logoutPost = asyncHandler(async (req, res) => {
                 .status(404)
                 .json({ message: 'Refresh token unavailable' })
         }
-        result.deletedCount > 0 && debug('Multiple refresh tokens were stored: %O', result)
-        res.status(200).json({ message: 'Logged out successfully', result: result })
+        result.deletedCount > 0 
+            && debug('Multiple refresh tokens were stored: %O', result)
+        res.
+            status(200)
+            .json({ message: 'Logged out successfully', result: result })
     } catch (err) {
         debug('Came across the following error logging out: %O', err)
         res.status(500).json({ message: 'An unexpected error occurred' });
@@ -149,7 +151,11 @@ exports.logoutPost = asyncHandler(async (req, res) => {
 
 function generateAccessToken(user) {
     const oneHourMS = 1 * 60 * 60 * 1000;
-    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
+    const token = jwt.sign(
+        user, 
+        process.env.ACCESS_TOKEN_SECRET, 
+        { expiresIn: '1h' }
+    )
     return {
         token,
         expiresAt: Date.now() + oneHourMS
