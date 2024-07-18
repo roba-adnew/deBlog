@@ -32,7 +32,7 @@ async function login(credentials) {
 async function deleteRefreshToken(userId) {
     const body = { userId }
     try {
-        console.log('making logout post request')
+        console.log('making refresh token delete request')
         const response = await fetch('http://localhost:4000/api/user/logout', {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -45,14 +45,11 @@ async function deleteRefreshToken(userId) {
     }
 }
 
-async function refreshToken() {
+async function getNewAccessToken() {
     const user = JSON.parse(localStorage.getItem('user'))
     const body = { user }
     try {
-        console.log('starting token refresh process')
-        const deleteResponse = await deleteRefreshToken(user._id)
-        const deleteData = await deleteResponse.json()
-        console.log('token refresh pt1, delete:', deleteData)
+        console.log('starting to get new access token')
         const response = await fetch('http://localhost:4000/api/user/refresh-token', {
             method: 'POST',
             headers: { 'Content-type' : 'application/json' },
@@ -63,8 +60,8 @@ async function refreshToken() {
         localStorage.setItem('token', data.accessToken)
         return data
     } catch (err) {
-        console.err()
+        console.error(err)
     }
 }
 
-export { signUp, login, deleteRefreshToken, refreshToken } 
+export { signUp, login, deleteRefreshToken, getNewAccessToken } 

@@ -1,4 +1,4 @@
-import { refreshToken } from './authApi'
+import { getNewAccessToken } from './authApi'
 
 async function getPosts() {
     try {
@@ -49,7 +49,7 @@ async function fetchWithToken(url, method, body) {
    
     try {
         if (new Date(accessToken.expiresAt).getTime() < Date.now()){
-            await refreshToken()
+            await getNewAccessToken()
             accessToken = JSON.parse(localStorage.getItem('token'))
         }
         const options = { method , headers: {}, body: JSON.stringify(body)}
@@ -64,4 +64,4 @@ async function fetchWithToken(url, method, body) {
     }
 }
 
-export { getPosts, getComments, editComment , addComment};
+export { getPosts, getComments, editComment, addComment };
