@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { login as apiLogin } from '../../../shared/utils/authApi'
-import { useAuth } from '../Contexts/AuthContext'
+import { useAuth } from '../../../shared/Contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import '../Styles/Login.css'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAuth } from '../Contexts/AuthContext'
+import { useAuth } from '../../../shared/Contexts/AuthContext'
 import { useLocation, Link } from 'react-router-dom'
 import '../Styles/NavBar.css'
 

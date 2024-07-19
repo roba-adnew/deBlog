@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom'
 import NavBar from './Components/NavBar';
-import { AuthProvider } from './Contexts/AuthContext'
+import { AuthProvider } from '../../shared/Contexts/AuthContext'
 import './App.css'
 
 function App() {
