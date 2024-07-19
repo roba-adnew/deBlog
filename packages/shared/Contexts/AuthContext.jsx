@@ -6,7 +6,7 @@ const AuthContext = createContext(null)
 
 function AuthProvider({ children }) {
     const navigate = useNavigate();
-    
+
     function updateLogin(userData, accessToken) {
         localStorage.setItem('user', JSON.stringify(userData))
         localStorage.setItem('token', JSON.stringify(accessToken))
@@ -28,7 +28,8 @@ function AuthProvider({ children }) {
         } 
     }
 
-    const contextData = { updateLogin, updateLogout }
+    const user = JSON.parse(localStorage.getItem('user'));
+    const contextData = { updateLogin, updateLogout, user }
 
     return (
         <AuthContext.Provider value={contextData}>

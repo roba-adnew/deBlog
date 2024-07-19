@@ -23,7 +23,7 @@ function NavBar() {
             return (
                 <div id='navbar'>
                     <Link to="/">home</Link>
-                    <Link to="/signup">signup</Link>
+                    <Link to="/sign-up">signup</Link>
                 </div>
             )
         case '/sign-up':
