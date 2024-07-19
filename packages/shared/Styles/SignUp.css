@@ -1,0 +1,66 @@
+/* Signup form */
+
+#signup {
+    display: flex;
+    justify-content: center;
+}
+
+#signup > form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    width: 60%;
+    
+    border: 1px solid rgb(218, 213, 194);
+
+    margin: 5rem;
+    padding: 2rem
+}
+
+label {
+    display: block
+}
+
+input {
+    margin: 5px
+}
+
+#submit {
+    align-self: center;
+    width: 70%;
+    margin: 2% 10% 0% 0% 
+}
+
+#pwValidator {
+    font-size: 0.7rem;
+    color: red;
+    margin: 0rem 0rem 0rem 1rem;
+}
+
+#authorCheck {
+    display: grid;
+    grid-template-areas: "left right";
+    font-size: 0.9rem;
+}
+
+#authorCheck > label {
+    margin-top: 0.2rem;
+}
+
+dialog {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%
+}
+
+#modalButton {
+    align-self: center;
+}
+
+button > a {
+    text-decoration: none;
+    color: black
+}
