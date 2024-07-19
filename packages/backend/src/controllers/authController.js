@@ -35,26 +35,32 @@ exports.accountCreationPost = asyncHandler(async (req, res, next) => {
 exports.loginPost = [
     passport.authenticate("local", { session: false }),
     asyncHandler(async (req, res, next) => {
+        debug('authenticated user: %O', req.user)
+        const user = {
+            id: req.user.id,
+            name: req.user.username,
+            author: req.user.author
+        }
+        
+        if (req.body.isAuthorLogin && !user.author) {
+            return res.status(403).json({ message: 'User is not an author' });
+        }
+
+        const accessToken = generateAccessToken(user)
+        const refreshToken = jwt.sign(
+            user,
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: '7d' }
+        )
+        const refreshTokenDetails = {
+            token: refreshToken,
+            userId: user.id
+        }
         try {
-            debug('authenticated user: %O', req.user)
-            const user = {
-                id: req.user.id,
-                name: req.user.username,
-                author: req.user.author
-            }
-            const accessToken = generateAccessToken(user)
-            const refreshToken = jwt.sign(
-                user,
-                process.env.REFRESH_TOKEN_SECRET,
-                { expiresIn: '7d' }
-            )
-            const dbRefreshToken = new RefreshToken({
-                token: refreshToken,
-                userId: user.id
-            })
+            const dbRefreshToken = new RefreshToken(refreshTokenDetails)
             const result = await dbRefreshToken.save();
             debug(`DB Refresh Token save results: %O`, result)
-            res.json({ user: req.user, accessToken })
+            res.json({ user: req.user, accessToken, message: 'logged in reader' })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
             res.status(401).json({ message: 'Unauthorized' });
@@ -79,7 +85,7 @@ exports.refreshToken = asyncHandler(async (req, res) => {
             const deleteResult = await RefreshToken.deleteMany(query)
             debug('Deleting refresh token on access token refresh %O:'
                 , deleteResult)
-            
+
             const userDetails = {
                 id: user._id,
                 name: user.name,
@@ -98,7 +104,7 @@ exports.refreshToken = asyncHandler(async (req, res) => {
             const result = await dbRefreshToken.save();
             return res.json({ accessToken: accessToken })
         }
-        
+
         const refreshToken = dbTokenEntry.token;
         debug('refresh token identified')
 
@@ -138,7 +144,7 @@ exports.logoutPost = asyncHandler(async (req, res) => {
                 .status(404)
                 .json({ message: 'Refresh token unavailable' })
         }
-        result.deletedCount > 0 
+        result.deletedCount > 0
             && debug('Multiple refresh tokens were stored: %O', result)
         res.
             status(200)
@@ -152,8 +158,8 @@ exports.logoutPost = asyncHandler(async (req, res) => {
 function generateAccessToken(user) {
     const oneHourMS = 1 * 60 * 60 * 1000;
     const token = jwt.sign(
-        user, 
-        process.env.ACCESS_TOKEN_SECRET, 
+        user,
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1h' }
     )
     return {
