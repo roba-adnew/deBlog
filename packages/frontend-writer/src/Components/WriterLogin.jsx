@@ -2,22 +2,27 @@ import React, { useState } from 'react'
 // import { login as apiLogin } from '../utils/authApi'
 // import { useAuth } from '../Contexts/AuthContext'
 // import { useNavigate } from 'react-router-dom'
-import '../Styles/Login.css'
+// import '../Styles/Login.css'
 
-function Login() {
+function WriterLogin() {
     const [credentials, setCredentials] = useState({
         username: '',
         password: ''
     })
     const [error, setError] = useState(null)
     // const navigate = useNavigate();
-    const { updateLogin } = useAuth();
+    // const { updateLogin } = useAuth();
 
     function updateUserLogin(e) {
         setCredentials({
             ...credentials,
             [e.target.name]: e.target.value
         })
+    }
+
+    function handleLogin(e) {
+        e.preventDefault();
+        console.log('loggin in lol')
     }
 
     // async function handleLogin(e) {
@@ -62,4 +67,4 @@ function Login() {
     )
 }
 
-export default Login
+export default WriterLogin
