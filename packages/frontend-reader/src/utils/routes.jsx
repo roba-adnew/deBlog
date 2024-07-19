@@ -1,7 +1,7 @@
 import React from 'react';
 import App from '../App'
-import SignUpForm from '../Components/SignUp'
-import Login from '../Components/Login'
+import SignUpForm from '../../../shared/Components/SignUp'
+import Login from '../../../shared/Components/Login'
 import Feed from '../Components/Feed'
 
 const routes = [
