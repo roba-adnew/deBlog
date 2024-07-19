@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { signUp } from '../utils/authApi'
-import NavBar from '../../frontend-reader/src/Components/NavBar';
+import NavBar from './NavBar';
 import '../Styles/SignUp.css'
 
 function CreationStatusModal({ creatingFlag, successFlag }) {
