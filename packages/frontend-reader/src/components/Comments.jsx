@@ -87,7 +87,6 @@ function Comment({ user, comment, postId, refetch }) {
 }
 
 function CommentSection({ postId }) {
-    const [isLoading, setIsLoading] = useState(true)
     const [comments, setComments] = useState([])
     const [refetch, setRefetch] = useState(false)
     const [error, setError] = useState(null)
@@ -97,9 +96,7 @@ function CommentSection({ postId }) {
     useEffect(() => {
         async function fetchComments(postId) {
             try {
-                setIsLoading(true)
                 const fetchedComments = await getComments(postId);
-                // console.log('Fetched comments:', fetchedComments);
                 if (!fetchedComments || fetchedComments.length === 0) {
                     throw new Error('failed to load comments')
                 }
@@ -108,7 +105,6 @@ function CommentSection({ postId }) {
                 setError(error)
                 console.error(err)
             } finally {
-                setIsLoading(false)
                 setRefetch(false)
             }
         }
