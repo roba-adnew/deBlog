@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import { getComments, editComment, addComment } from '../utils/postApi'
+import { useAuth } from '../../../shared/Contexts/AuthContext'
 
 function Comment({ user, comment, postId, refetch }) {
     const [editing, setEditing] = useState(false)
@@ -91,8 +92,7 @@ function CommentSection({ postId }) {
     const [refetch, setRefetch] = useState(false)
     const [error, setError] = useState(null)
 
-    const user = JSON.parse(localStorage.getItem('user'))
-    const loggedIn = !!user
+    const { user } = useAuth()
 
     useEffect(() => {
         async function fetchComments(postId) {
@@ -159,7 +159,7 @@ function CommentSection({ postId }) {
 
                     </form>
                 </div>
-                : <div className='addCommentButton' onClick={toggleForm}>
+                :<div className='addCommentButton' onClick={toggleForm}>
                     + add new comment
                 </div>
         )
@@ -190,9 +190,8 @@ function CommentSection({ postId }) {
                     })}
                 </div>
             }
-            {loggedIn && <AddCommentForm />}
+            {user && <AddCommentForm />}
         </>
-
     )
 }
 
