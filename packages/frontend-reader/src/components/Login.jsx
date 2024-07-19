@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { login as apiLogin } from '../utils/authApi'
+import { login as apiLogin } from '../../../shared/utils/authApi'
 import { useAuth } from '../Contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import '../Styles/Login.css'
@@ -7,7 +7,8 @@ import '../Styles/Login.css'
 function Login() {
     const [credentials, setCredentials] = useState({
         username: '',
-        password: ''
+        password: '',
+        isAuthorLogin: false
     })
     const [error, setError] = useState(null)
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteRefreshToken } from '../utils/authApi'
+import { deleteRefreshToken } from '../../../shared/utils/authApi'
 
 const AuthContext = createContext(null)
 

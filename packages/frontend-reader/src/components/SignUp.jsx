@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { signUp } from '../utils/authApi'
+import { signUp } from '../../../shared/utils/authApi'
 import NavBar from './NavBar';
 import '../Styles/SignUp.css'
 

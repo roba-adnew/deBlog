@@ -41,9 +41,9 @@ function Feed({ }) {
 
     if (isLoading) {
         return (
-            <div>
+            <dialog open>
                 Just a moment, we&apos;re just getting this post for you...
-            </div>
+            </dialog>
         )
     }
 

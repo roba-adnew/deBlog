@@ -1,4 +1,4 @@
-import { fetchWithToken } from './authApi'
+import { fetchWithToken } from '../../../shared/utils/authApi'
 
 async function getPosts() {
     try {
