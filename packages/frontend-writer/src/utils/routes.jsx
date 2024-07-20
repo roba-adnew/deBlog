@@ -1,7 +1,7 @@
 import React from 'react';
 import App from '../App'
 import EditFeed from '../Components/EditFeed'
-import WriterLogin from '../Components/WriterLogin'
+import Login from '../../../shared/Components/Login';
 
 const routes = [
   {
@@ -14,7 +14,7 @@ const routes = [
       },
       {
         path: "/login",
-        element: <WriterLogin />,
+        element: <Login />
       }
        //   ,{
     //     path: "/new-post",

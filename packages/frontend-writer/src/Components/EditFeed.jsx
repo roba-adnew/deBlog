@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 // import PropTypes from 'prop-types'
-// import { format } from 'date-fns'
+import { format } from 'date-fns'
 // import { getPosts } from '../utils/postApi'
 // import CommentSection from './Comments'
 // import '../Styles/Feed.css'
@@ -17,7 +17,7 @@ function Post({ post }) {
 }
 
 function EditFeed({ }) {
-    const [isLoading, setIsLoading] = useState(true)
+    // const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState([
         {
             _id: 'ID',
@@ -27,7 +27,7 @@ function EditFeed({ }) {
                     username: 'nah'
                 }
             },
-            ts: new Date.now(),
+            ts: Date.now(),
             content: 'ya feel'
         }
     ])
@@ -51,11 +51,12 @@ function EditFeed({ }) {
     //     fetchPosts()
     // }, [])
 
+    const isLoading = false // delete line eventually
     if (isLoading) {
         return (
-            <div>
-                Just a moment, we&apos;re just getting this post for you...
-            </div>
+            <dialog>
+                Just a moment, we&apos;re just getting this stuff for you...
+            </dialog>
         )
     }
 
@@ -67,12 +68,11 @@ function EditFeed({ }) {
     return (
         <>
             <div id="feed">
+                {console.log('trying to load the feed')}
                 {posts.map(post => (<Post post={post} key={post._id}/>))}
             </div>
         </>
     )
 }
-
-// Post.propTypes = { post: PropTypes.object }
 
 export default EditFeed
