@@ -71,7 +71,7 @@ async function getNewAccessToken() {
     }
 }
 
-async function fetchWithToken(url, method, body) {
+async function fetchWithToken(url, method = 'GET', body) {
     let accessTokenJSON = localStorage.getItem('token')
 
     try {
@@ -80,14 +80,15 @@ async function fetchWithToken(url, method, body) {
 
         const options = {
             method,
-            headers: {
-                'Authorization': `Bearer ${accessToken.token}`,
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(body)
+            headers: {'Authorization': `Bearer ${accessToken.token}`}
         }
+        if (body) {
+            options.headers['Content-type'] = 'application/json'
+            options.body = JSON.stringify(body)
+        }
+
         const tokenExpired = 
-        new Date(accessToken.expiresAt).getTime() < Date.now()
+            new Date(accessToken.expiresAt).getTime() < Date.now()
 
         if (tokenExpired) {
             await getNewAccessToken()
