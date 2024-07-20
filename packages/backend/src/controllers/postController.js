@@ -16,6 +16,27 @@ exports.postsGet = asyncHandler(async (req, res, next) => {
     }
 })
 
+exports.authorPostsGet = (req, res, next) => {
+    passport.authenticate("jwt", { session: false }, (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return res.status(401).json({ message: 'Unauthorized' })
+        req.user = user;
+        debug('User authenticated: %O', req.user)
+        asyncHandler(async (req, res, next) => {
+            try {
+                const posts = await Post
+                    .find({user: req.user.id})
+                    .populate('user', 'username');
+                debug(`Retrieving posts for ${req.user.name}`);
+                res.json({ posts })
+            } catch (err) {
+                debug('Error retrieving posts: %O', err)
+                next(err)
+            }
+        })(req, res, next)
+    })(req, res, next)
+}
+
 exports.postCreationPost = (req, res, next) => {
     passport.authenticate("jwt", { session: false }, (err, user, info) => {
         if (err) return next(err);

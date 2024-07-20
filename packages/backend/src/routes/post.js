@@ -6,6 +6,8 @@ router.get('/', postController.postsGet)
 
 router.post('/', postController.postCreationPost)
 
+router.get('/author', postController.authorPostsGet)
+
 router.get('/:postId/comments', postController.commentsGet)
 
 router.post('/:postId/comments', postController.commentCreationPost)

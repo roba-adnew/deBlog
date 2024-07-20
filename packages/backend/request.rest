@@ -16,27 +16,33 @@ POST http://localhost:4000/api/user/login
 Content-Type: application/json 
 
 {
-    "username": "hoba",
+    "username": "doba",
     "password": "him",
     "isAuthorLogin": true
 }
 
 ###
-# Load blog posts 
+# Load blog posts for a reader
 GET http://localhost:4000/api/posts
+
+###
+# Load blog posts for an author
+GET http://localhost:4000/api/posts/author
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODVhN2M1YWY0ZGM2ZDRjNzIwNmU2MCIsIm5hbWUiOiJkb2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE0MzYzMTAsImV4cCI6MTcyMTQzOTkxMH0.whxYFpqNdjiAZl_44qa1vmkWq4uQzn4ShF_i_1Uyj7I
+
 
 ###
 # Write a blog post
 POST http://localhost:4000/api/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsIm5hbWUiOiJ0b2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjEyNTU0NjgsImV4cCI6MTcyMTI1OTA2OH0.3sHmN0Ya-Xm6dEhHGvYP8oxnEvBlBAZUh8BZNFLj-cE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODVhN2M1YWY0ZGM2ZDRjNzIwNmU2MCIsIm5hbWUiOiJkb2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE0Mjg0MzQsImV4cCI6MTcyMTQzMjAzNH0.tAU1DN3J3VsU6DGxoSoUyA8DZN2QOEsrssrx6V9beaE
 Content-Type: application/json
 
 {
-    "userId": "6685b8f009a4362bf83f625d",
-    "title": "making a lot of changes can be scary",
-    "content": "life can be scary. change is scary. simply updating the type of what's returned in an object can be scary. live to dare"
-
+    "userId": "6685a7c5af4dc6d4c7206e60",
+    "title": "mixing it up a little",
+    "content": "look, now that we're at a point where we're all trying to write some good stuff, I'm throwing my hat in there. I'm writing this to prove myself"
 }
+
 ###
 # Write a comment
 POST http://localhost:4000/api/posts/66984695c4557744acbcb057/comments
