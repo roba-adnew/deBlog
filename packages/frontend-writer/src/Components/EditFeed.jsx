@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-// import PropTypes from 'prop-types'
 import { format } from 'date-fns'
-// import { getPosts } from '../utils/postApi'
+import { getAuthorPosts } from '../utils/postApi'
 // import CommentSection from './Comments'
 // import '../Styles/Feed.css'
 
-function Post({ post }) {
+function PostCard({ post }) {
     return (
         <div className="post" >
             <h3 className='title'>{post.title}</h3>
@@ -17,41 +16,28 @@ function Post({ post }) {
 }
 
 function EditFeed({ }) {
-    // const [isLoading, setIsLoading] = useState(true)
-    const [posts, setPosts] = useState([
-        {
-            _id: 'ID',
-            title: 'test ya know',
-            user: {
-                user: {
-                    username: 'nah'
+    const [isLoading, setIsLoading] = useState(true)
+    const [posts, setPosts] = useState([])
+
+    useEffect(() => {
+        async function fetchPosts() {
+            try {
+                setIsLoading(true)
+                const fetchedPosts = await getAuthorPosts();
+                console.log('Fetched posts:', fetchedPosts);
+                if (!fetchedPosts || fetchedPosts.length === 0) {
+                    throw new Error('failed to load posts')
                 }
-            },
-            ts: Date.now(),
-            content: 'ya feel'
+                setPosts(fetchedPosts)
+            } catch (err) {
+                console.error('Error fetching posts:', err)
+            } finally {
+                setIsLoading(false)
+            }
         }
-    ])
+        fetchPosts()
+    }, [])
 
-    // useEffect(() => {
-    //     async function fetchPosts() {
-    //         try {
-    //             setIsLoading(true)
-    //             const fetchedPosts = await getPosts();
-    //             console.log('Fetched posts:', fetchedPosts);
-    //             if (!fetchedPosts || fetchedPosts.length === 0) {
-    //                 throw new Error('failed to load posts')
-    //             }
-    //             setPosts(fetchedPosts)
-    //         } catch (err) {
-    //             console.error('Error fetching posts:', err)
-    //         } finally {
-    //             setIsLoading(false)
-    //         }
-    //     }
-    //     fetchPosts()
-    // }, [])
-
-    const isLoading = false // delete line eventually
     if (isLoading) {
         return (
             <dialog>
@@ -69,7 +55,7 @@ function EditFeed({ }) {
         <>
             <div id="feed">
                 {console.log('trying to load the feed')}
-                {posts.map(post => (<Post post={post} key={post._id}/>))}
+                {posts.map(post => (<PostCard post={post} key={post._id}/>))}
             </div>
         </>
     )
