@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import { getComments, editComment, addComment } from '../utils/postApi'
 import { useAuth } from '../../../shared/Contexts/AuthContext'
@@ -190,8 +189,5 @@ function CommentSection({ postId }) {
         </>
     )
 }
-
-Comment.propTypes = { comment: PropTypes.object }
-CommentSection.propTypes = { postId: PropTypes.string }
 
 export default CommentSection

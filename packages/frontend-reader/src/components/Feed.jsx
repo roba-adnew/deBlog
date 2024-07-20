@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 import { getPosts } from '../utils/postApi'
 import CommentSection from './Comments'
@@ -53,15 +52,10 @@ function Feed({ }) {
     }
 
     return (
-        <>
-            <div id="feed">
-                {posts.map(post => (<Post post={post} key={post._id}/>))}
-            </div>
-        </>
+        <div id="feed">
+            {posts.map(post => (<Post post={post} key={post._id} />))}
+        </div>
     )
 }
-
-
-Post.propTypes = { post: PropTypes.object }
 
 export default Feed
