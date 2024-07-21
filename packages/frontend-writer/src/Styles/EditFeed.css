@@ -5,8 +5,8 @@
     align-items: center;
 }
 
-/* Post formatting */
-.post, #newPostButton {
+/* Post Card formatting */
+.post, #newPostButton, #postForm {
     display: flex;
     align-items: center;
     justify-content: space-between;

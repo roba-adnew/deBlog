@@ -14,40 +14,73 @@ function PostForm({ inEditPost = {} }) {
         draft: true,
     })
 
-    function toggleForm(){ setEditing(!editing) }
+    function toggleForm() { 
+        setEditing(!editing) 
+    }
 
-    const newPostButton = 
+    function handleSubmission() {}
+
+    function updatePostDraft(e) {
+        setPostDraft({
+            ...postDraft,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const newPostButton =
         <div id='newPostButton' onClick={toggleForm}>
             + Start on a new post
         </div>
 
-    const newButtonForm = <div onClick={toggleForm}>Temp form</div>
+    const newPostForm =
+        <div class='postForm'>
+            <form onSubmit={handleSubmission} method='POST'>
+                <label for='title'>title</label>
+                <input
+                    name='title'
+                    value={postDraft.title}
+                    onChange={updatePostDraft}
+                />
+                <label for='content'>content</label>
+                <input
+                    name='content'
+                    value={postDraft.content}
+                    onChange={updatePostDraft}
+                />
+                <div className='formBtnsDiv'>
+                    <button className='addBtn'>Add Post&nbsp;</button>
+                    <button className='cancelBtn' onClick={toggleForm}>
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
 
     return (
-        editing ? newButtonForm : newPostButton
+        editing ? newPostForm : newPostButton
     )
 }
 
 function PostPreviewCard({ post }) {
-    {console.log(post)}
-    
+    { console.log(post) }
+
     return (
         <div className="post" >
             <div className='title'>
-                {post.title.length > 24  
-                    ? post.title.slice(0,24).trimEnd().concat('...')
+                {post.title.length > 24
+                    ? post.title.slice(0, 24).trimEnd().concat('...')
                     : post.title
                 }
             </div>
             <div className='flags'>
-                   <div className={post.draft ? 'inDraft' : 'completed'}>
-                in draft
+                <div className={post.draft ? 'inDraft' : 'completed'}>
+                    in draft
+                </div>
+                <div className={post.published ? 'published' : 'unPublished'}>
+                    {post.published ? 'published' : 'not published'}
+                </div>
             </div>
-            <div className={post.published ? 'published' : 'unPublished'}>
-                {post.published ? 'published' : 'not published'}
-            </div>
-            </div>
-         
+
         </div>
     )
 }
@@ -91,7 +124,7 @@ function EditFeed({ }) {
     return (
         <div id="feed">
             {console.log('trying to load the feed')}
-            {posts.map(post => (<PostPreviewCard post={post} key={post._id}/>))}
+            {posts.map(post => (<PostPreviewCard post={post} key={post._id} />))}
             <PostForm />
         </div>
     )
