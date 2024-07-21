@@ -1,7 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import { format } from 'date-fns'
+import { useAuth } from '../../../shared/Contexts/AuthContext';
 import { getAuthorPosts } from '../utils/postApi'
 import '../Styles/EditFeed.css'
+
+function PostForm({ inEditPost = {} }) {
+    const { user } = useAuth();
+    const [editing, setEditing] = useState(false)
+    const [postDraft, setPostDraft] = useState({
+        user: user._id,
+        title: inEditPost.title,
+        content: inEditPost.content,
+        published: inEditPost.published || false,
+        draft: true,
+    })
+
+    function toggleForm(){ setEditing(!editing) }
+
+    const newPostButton = 
+        <div id='newPostButton' onClick={toggleForm}>
+            + Start on a new post
+        </div>
+
+    const newButtonForm = <div onClick={toggleForm}>Temp form</div>
+
+    return (
+        editing ? newButtonForm : newPostButton
+    )
+}
 
 function PostPreviewCard({ post }) {
     {console.log(post)}
@@ -64,12 +89,11 @@ function EditFeed({ }) {
     }
 
     return (
-        <>
-            <div id="feed">
-                {console.log('trying to load the feed')}
-                {posts.map(post => (<PostPreviewCard post={post} key={post._id}/>))}
-            </div>
-        </>
+        <div id="feed">
+            {console.log('trying to load the feed')}
+            {posts.map(post => (<PostPreviewCard post={post} key={post._id}/>))}
+            <PostForm />
+        </div>
     )
 }
 

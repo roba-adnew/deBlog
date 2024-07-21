@@ -6,7 +6,7 @@
 }
 
 /* Post formatting */
-.post {
+.post, #newPostButton {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -57,4 +57,12 @@
     background-color: green;
     color: white;
     font-weight: 700;
+}
+
+/* New post button */
+#newPostButton {
+    border: 0.1rem solid rgba(0, 0, 0, 0.145);
+    width: auto;
+    font-style: italic;
+    font-weight: 550;
 }
