@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { format } from 'date-fns'
 import { getAuthorPosts } from '../utils/postApi'
-// import CommentSection from './Comments'
-// import '../Styles/Feed.css'
+import '../Styles/EditFeed.css'
 
-function PostCard({ post }) {
+function PostPreviewCard({ post }) {
     return (
         <div className="post" >
             <h3 className='title'>{post.title}</h3>
             <p className='authorDate'>{post.user.username} - {format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
             <p className='content'>{post.content}</p>
-            {/* <CommentSection postId={post._id} /> */}
         </div>
     )
 }
@@ -55,7 +53,7 @@ function EditFeed({ }) {
         <>
             <div id="feed">
                 {console.log('trying to load the feed')}
-                {posts.map(post => (<PostCard post={post} key={post._id}/>))}
+                {posts.map(post => (<PostPreviewCard post={post} key={post._id}/>))}
             </div>
         </>
     )

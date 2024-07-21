@@ -1,7 +1,7 @@
 import { fetchWithToken } from '../../../shared/utils/authApi'
 
 async function getAuthorPosts() {
-    const url = 'http://localhost:4000/api/posts'
+    const url = 'http://localhost:4000/api/posts/author'
     try {
         const response = await fetchWithToken(url);
         const data = await response.json();
