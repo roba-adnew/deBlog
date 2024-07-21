@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../../shared/Contexts/AuthContext';
-import { getAuthorPosts } from '../utils/postApi'
+import { addPost, getAuthorPosts } from '../utils/postApi'
 import '../Styles/EditFeed.css'
 
-function PostForm({ inEditPost = {} }) {
+function PostForm({ inEditPost = {}, refetch }) {
     const { user } = useAuth();
     const [editing, setEditing] = useState(false)
     const [postDraft, setPostDraft] = useState({
@@ -14,11 +14,23 @@ function PostForm({ inEditPost = {} }) {
         draft: true,
     })
 
-    function toggleForm() { 
-        setEditing(!editing) 
-    }
+    function toggleForm() { setEditing(!editing) }
 
-    function handleSubmission() {}
+    async function handlePostSubmission(e) {
+        e.preventDefault();
+        try {
+            console.log('commencing submitting post')
+            const response = await addPost(postDraft)
+            console.log('post submission response:', response)
+            console.log('post submitted')
+            refetch(true)
+        } catch (err) {
+            console.error(err)
+            throw err
+        } finally {
+            toggleForm()
+        }
+    }
 
     function updatePostDraft(e) {
         setPostDraft({
@@ -33,18 +45,20 @@ function PostForm({ inEditPost = {} }) {
         </div>
 
     const newPostForm =
-        <div class='postForm'>
-            <form onSubmit={handleSubmission} method='POST'>
-                <label for='title'>title</label>
+        <div className='postForm'>
+            <form onSubmit={handlePostSubmission} method='POST'>
                 <input
                     name='title'
-                    value={postDraft.title}
+                    className='title'
+                    placeholder='title'
+                    value={postDraft.title || ''}
                     onChange={updatePostDraft}
                 />
-                <label for='content'>content</label>
                 <input
                     name='content'
-                    value={postDraft.content}
+                    className='content'
+                    placeholder='content'
+                    value={postDraft.content || ''}
                     onChange={updatePostDraft}
                 />
                 <div className='formBtnsDiv'>
@@ -88,6 +102,7 @@ function PostPreviewCard({ post }) {
 function EditFeed({ }) {
     const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState([])
+    const [refetch, setRefetch] = useState(false)
 
     useEffect(() => {
         async function fetchPosts() {
@@ -103,10 +118,11 @@ function EditFeed({ }) {
                 console.error('Error fetching posts:', err)
             } finally {
                 setIsLoading(false)
+                setRefetch(false)
             }
         }
         fetchPosts()
-    }, [])
+    }, [refetch])
 
     if (isLoading) {
         return (
@@ -124,8 +140,10 @@ function EditFeed({ }) {
     return (
         <div id="feed">
             {console.log('trying to load the feed')}
-            {posts.map(post => (<PostPreviewCard post={post} key={post._id} />))}
-            <PostForm />
+            {posts.map(post => (
+                <PostPreviewCard post={post} key={post._id} />
+            ))}
+            <PostForm refetch={setRefetch}/>
         </div>
     )
 }

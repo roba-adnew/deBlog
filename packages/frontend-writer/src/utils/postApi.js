@@ -37,17 +37,16 @@ async function getAuthorPosts() {
 //     }
 // }
 
-// async function addComment(postId, content){
-//     const body = { content }
-//     const method = 'POST'
-//     const url = `http://localhost:4000/api/posts/${postId}/comments`
-//     try {
-//         const response = await fetchWithToken(url, method, body) 
-//         const data = await response.json()
-//         return data
-//     } catch (err) {
-//         throw err
-//     }
-// }
+async function addPost(post){
+    const method = 'POST'
+    const url = `http://localhost:4000/api/posts/`
+    try {
+        const response = await fetchWithToken(url, method, post) 
+        const data = await response.json()
+        return data
+    } catch (err) {
+        throw err
+    }
+}
 
-export { getAuthorPosts };
+export { getAuthorPosts, addPost };

@@ -6,7 +6,7 @@
 }
 
 /* Post Card formatting */
-.post, #newPostButton, #postForm {
+.post, #newPostButton, .postForm {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -65,4 +65,12 @@
     width: auto;
     font-style: italic;
     font-weight: 550;
+}
+
+#postForm > form {
+    width: 100%
+}
+
+#postForm > #title {
+    width: 100%
 }
