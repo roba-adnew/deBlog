@@ -4,11 +4,25 @@ import { getAuthorPosts } from '../utils/postApi'
 import '../Styles/EditFeed.css'
 
 function PostPreviewCard({ post }) {
+    {console.log(post)}
+    
     return (
         <div className="post" >
-            <h3 className='title'>{post.title}</h3>
-            <p className='authorDate'>{post.user.username} - {format(new Date(post.ts), 'MMM-dd-yyyy')}</p>
-            <p className='content'>{post.content}</p>
+            <div className='title'>
+                {post.title.length > 24  
+                    ? post.title.slice(0,24).trimEnd().concat('...')
+                    : post.title
+                }
+            </div>
+            <div className='flags'>
+                   <div className={post.draft ? 'inDraft' : 'completed'}>
+                in draft
+            </div>
+            <div className={post.published ? 'published' : 'unPublished'}>
+                {post.published ? 'published' : 'not published'}
+            </div>
+            </div>
+         
         </div>
     )
 }
