@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../shared/Contexts/AuthContext';
 import { addPost, editPost, getAuthorPosts } from '../utils/postApi'
 import PostForm from './PostForm';
@@ -123,6 +124,11 @@ function AuthorFeed() {
     const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState([])
     const [refetch, setRefetch] = useState(false)
+    const { user } = useAuth()
+    const navigate = useNavigate()
+
+    console.log('user check', user, !user, !!user)
+    if (user === null || user === undefined) navigate('/login');
 
     useEffect(() => {
         async function fetchPosts() {

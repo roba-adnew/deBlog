@@ -2,6 +2,7 @@ import React from 'react';
 import App from '../App'
 import AuthorFeed from '../Components/AuthorFeed'
 import Login from '../../../shared/Components/Login';
+import SignUpForm from '../../../shared/Components/SignUp';
 
 const routes = [
   {
@@ -15,6 +16,10 @@ const routes = [
       {
         path: "/login",
         element: <Login />
+      },
+      {
+        path: "/sign-up",
+        element: <SignUpForm requester='author'/>
       }
     ]
   }
