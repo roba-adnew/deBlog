@@ -19,7 +19,8 @@ exports.postsGet = asyncHandler(async (req, res, next) => {
 exports.authorPostsGet = (req, res, next) => {
     passport.authenticate("jwt", { session: false }, (err, user, info) => {
         if (err) return next(err);
-        if (!user) return res.status(401).json({ message: 'Unauthorized' })
+        debug('user', user)
+        if (!user) return res.status(401).json({ message: 'Unauthorized', err })
         req.user = user;
         debug('User authenticated: %O', req.user)
         asyncHandler(async (req, res, next) => {
@@ -44,20 +45,46 @@ exports.postCreationPost = (req, res, next) => {
         req.user = user;
         debug('User authenticated: %O', req.user)
         asyncHandler(async (req, res, next) => {
+            const postEntry = req.body;
             try {
-                debug('Received request body:', req.body);
+                debug('Received request body:', postEntry);
                 debug('Authenticated user:', req.user);
-                const post = new Post({
-                    user: req.user.id,
-                    title: req.body.title,
-                    content: req.body.content,
-                })
+                const post = new Post(postEntry)
                 const result = await post.save()
                 debug(`Attempting post: %O`, result)
                 return res.status(201).json({ message: 'Post created' })
             } catch (err) {
                 debug(`Post creation err for: %O`, err)
                 return next(err)
+            }
+        })(req, res, next)
+    })(req, res, next)
+}
+
+exports.postEditPut = (req, res, next) => {
+    passport.authenticate("jwt", { session: false }, (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return res.status(401).json({ message: 'Unauthorized' })
+        req.user = user;
+        debug('User authenticated: %O', req.user)
+        asyncHandler(async (req, res, next) => {
+            try {
+                const postId = req.params.postId
+                debug('id', postId)
+                const editedPost = req.body;
+                debug('Received request body:', editedPost);
+
+                const updatedPost = await Post.findByIdAndUpdate(
+                    postId,
+                    { $set: editedPost}
+                );
+                debug('queried post: %O', updatedPost)
+                if (!updatedPost) throw new Error('Post not found');
+
+                res.status(201).json({ message: 'Post updated successfully', updatedPost });
+            } catch (err) {
+                debug('Error updating post:', err);
+                throw err;
             }
         })(req, res, next)
     })(req, res, next)
@@ -146,7 +173,9 @@ exports.commentEditPut = (req, res, next) => {
                 comment.edits.push({ts: prevTs,content: prevContent});
 
                 await post.save();
-                res.status(201).json({ message: 'Comment updated successfully', comment });
+                res
+                    .status(201)
+                    .json({ message: 'Comment updated successfully', comment });
             } catch (err) {
                 debug('Error updating comment:', err);
                 throw err;

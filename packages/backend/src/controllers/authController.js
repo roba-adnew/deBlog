@@ -41,7 +41,6 @@ exports.loginPost = [
             name: req.user.username,
             author: req.user.author
         }
-        
         if (req.body.isAuthorLogin && !user.author) {
             return res.status(403).json({ message: 'User is not an author' });
         }
@@ -60,7 +59,7 @@ exports.loginPost = [
             const dbRefreshToken = new RefreshToken(refreshTokenDetails)
             const result = await dbRefreshToken.save();
             debug(`DB Refresh Token save results: %O`, result)
-            res.json({ user: req.user, accessToken, message: 'logged in reader' })
+            res.json({ user: req.user, accessToken, message: 'logged in' })
         } catch (err) {
             debug(`Error saving refresh token: %O`, err)
             res.status(401).json({ message: 'Unauthorized' });

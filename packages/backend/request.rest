@@ -16,7 +16,7 @@ POST http://localhost:4000/api/user/login
 Content-Type: application/json 
 
 {
-    "username": "doba",
+    "username": "toba",
     "password": "him",
     "isAuthorLogin": true
 }
@@ -28,19 +28,31 @@ GET http://localhost:4000/api/posts
 ###
 # Load blog posts for an author
 GET http://localhost:4000/api/posts/author
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODVhN2M1YWY0ZGM2ZDRjNzIwNmU2MCIsIm5hbWUiOiJkb2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE0MzYzMTAsImV4cCI6MTcyMTQzOTkxMH0.whxYFpqNdjiAZl_44qa1vmkWq4uQzn4ShF_i_1Uyj7I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsIm5hbWUiOiJ0b2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE2MjU1NzksImV4cCI6MTcyMTYyOTE3OX0.uNCnSzoEio983YU81QldqacFjvL7gICBvaMyStVA61Q
 
 
 ###
 # Write a blog post
-POST http://localhost:4000/api/posts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODVhN2M1YWY0ZGM2ZDRjNzIwNmU2MCIsIm5hbWUiOiJkb2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE0Mjg0MzQsImV4cCI6MTcyMTQzMjAzNH0.tAU1DN3J3VsU6DGxoSoUyA8DZN2QOEsrssrx6V9beaE
+POST http://localhost:4000/api/posts/author
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsIm5hbWUiOiJ0b2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE2MjYzODEsImV4cCI6MTcyMTYyOTk4MX0.E7qLzuU0tSkJlPC05WSXWj8Dvawvx67JREvrEN4Us_w
 Content-Type: application/json
 
 {
-    "userId": "6685a7c5af4dc6d4c7206e60",
-    "title": "mixing it up a little",
-    "content": "look, now that we're at a point where we're all trying to write some good stuff, I'm throwing my hat in there. I'm writing this to prove myself"
+    "user": "6685b8f009a4362bf83f625d",
+    "title": "issues with apis, so need to make a check",
+    "content": "these are getting old huh"
+}
+
+###
+# Edit a blog post
+PUT http://localhost:4000/api/posts/author/669defa8c0dc98a0affabfb0/edit
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsIm5hbWUiOiJ0b2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE2MjYzODEsImV4cCI6MTcyMTYyOTk4MX0.E7qLzuU0tSkJlPC05WSXWj8Dvawvx67JREvrEN4Us_w
+Content-Type: application/json
+
+{
+    "user": "6685b8f009a4362bf83f625d",
+    "title": "less issues with the api, check out this edit",
+    "content": "it's not so bad, but look at what I had before. look, now that we're at a point where we're all trying to write some good stuff, I'm throwing my hat in there. I'm writing this to prove myself"
 }
 
 ###
