@@ -95,6 +95,7 @@ async function fetchWithToken(url, method = 'GET', body) {
             accessToken = JSON.parse(localStorage.getItem('token'))
             options.headers['Authorization'] = `Bearer ${accessToken.token}`
         }
+        console.log('auth options', options)
         const response = await fetch(url, options)
         return response
     } catch (err) {

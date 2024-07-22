@@ -32,7 +32,7 @@ function CreationStatusModal({ creatingFlag, successFlag }) {
     )
 }
 
-function SignUpForm() {
+function SignUpForm({ requester }) {
     const [userInfo, setUserInfo] = useState({
         firstName: '',
         lastName: '',
@@ -40,7 +40,6 @@ function SignUpForm() {
         password: '',
         author: false
     })
-
     const [pwdsMatch, setPwdsMatch] = useState(false)
     const [pwdConfExists, setPwdConfExists] = useState(false)
     const [creatingAccount, setCreatingAccount] = useState(false)
@@ -126,20 +125,21 @@ function SignUpForm() {
                         placeholder='re-enter password'
                         onBlur={checkPwdConf}
                     />
-                    <div id='authorCheck'>
-                        <input
-                            name='author'
-                            type='checkbox'
-                            onChange={updateUserInfo}
-                        />
-
-                        <label htmlFor='author'>
-                            {userInfo.author ?
-                                'i want to write posts' :
-                                'i just want to read and comment'
-                            }
-                        </label>
-                    </div>
+                    {requester === 'reader'
+                        ? <div id='authorCheck'>
+                            <input
+                                name='author'
+                                type='checkbox'
+                                onChange={updateUserInfo}
+                            />
+                            <label htmlFor='author'>
+                                {userInfo.author ?
+                                    'i want to write posts' :
+                                    'i just want to read and comment'
+                                }
+                            </label>
+                        </div>
+                        : userInfo.author = true}
                     {
                         pwdConfExists && !pwdsMatch
                         && <p id='pwValidator'>passwords dont match</p>
