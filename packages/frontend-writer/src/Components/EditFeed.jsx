@@ -33,9 +33,11 @@ function PostForm({ inEditPost = {}, refetch }) {
     }
 
     function updatePostDraft(e) {
+        const updateValue = e.target.name === 'draft' ?
+            !postDraft.draft : e.target.value
         setPostDraft({
             ...postDraft,
-            [e.target.name]: e.target.value
+            [e.target.name]: updateValue
         })
     }
 
@@ -45,41 +47,58 @@ function PostForm({ inEditPost = {}, refetch }) {
         </div>
 
     const newPostForm =
-        <div className='postForm'>
-            <form onSubmit={handlePostSubmission} method='POST'>
-                <input
-                    name='title'
-                    className='title'
-                    placeholder='title'
-                    value={postDraft.title || ''}
-                    onChange={updatePostDraft}
-                />
-                <input
-                    name='content'
-                    className='content'
-                    placeholder='content'
-                    value={postDraft.content || ''}
-                    onChange={updatePostDraft}
-                />
-                <div className='formBtnsDiv'>
-                    <button className='addBtn'>Add Post&nbsp;</button>
-                    <button className='cancelBtn' onClick={toggleForm}>
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
+        <>
+            <div className='postForm'>
+            <p>New post</p>
+                <form onSubmit={handlePostSubmission} method='POST'>
+                    <input
+                        name='title'
+                        className='title'
+                        placeholder='title'
+                        value={postDraft.title || ''}
+                        onChange={updatePostDraft}
+                    />
+                    <textarea
+                        name='content'
+                        className='content'
+                        placeholder='content'
+                        value={postDraft.content || ''}
+                        onChange={updatePostDraft}
+                    />
+                    <div id='checkbox'>
+                        <input
+                            name='draft'
+                            type='checkbox'
+                            onChange={updatePostDraft}
+                            />
+                        <label for='draft'>
+                            {postDraft.draft 
+                                ? 'in draft' 
+                                : 'completed'
+                            }
 
+                        </label>
+                    </div>
+                    
+                    <div className='formBtnsDiv'>
+                        <button className='addBtn'>submit post&nbsp;</button>
+                        <button className='cancelBtn' onClick={toggleForm}>
+                            cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </>
+
+    console.log(postDraft)
     return (
         editing ? newPostForm : newPostButton
     )
 }
 
 function PostPreviewCard({ post }) {
-    { console.log(post) }
-
     return (
-        <div className="post" >
+        <div className='post' >
             <div className='title'>
                 {post.title.length > 24
                     ? post.title.slice(0, 24).trimEnd().concat('...')
@@ -143,7 +162,7 @@ function EditFeed({ }) {
             {posts.map(post => (
                 <PostPreviewCard post={post} key={post._id} />
             ))}
-            <PostForm refetch={setRefetch}/>
+            <PostForm refetch={setRefetch} />
         </div>
     )
 }
