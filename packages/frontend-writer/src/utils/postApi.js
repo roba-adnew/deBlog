@@ -14,7 +14,7 @@ async function getAuthorPosts() {
 
 async function addPost(post){
     const method = 'POST'
-    const url = `http://localhost:4000/api/posts/`
+    const url = `http://localhost:4000/api/posts/author`
     try {
         const response = await fetchWithToken(url, method, post) 
         const data = await response.json()
