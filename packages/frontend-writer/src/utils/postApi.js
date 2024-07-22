@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { fetchWithToken } from '../../../shared/utils/authApi'
 
 async function getAuthorPosts() {
