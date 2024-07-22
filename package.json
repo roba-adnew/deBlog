@@ -7,15 +7,17 @@
   ],
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.4",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "turbo": "latest"
+
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -32,7 +34,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.1",
-    "turbo": "^2.0.9"
-  }
+    "react-router-dom": "^6.24.1"
+  },
+  "packageManager": "npm@10.8.1"
 }
