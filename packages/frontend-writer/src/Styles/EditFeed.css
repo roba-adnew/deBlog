@@ -16,7 +16,7 @@
     margin: 0.6rem;
 }
 
-.title {
+.post > .title {
     font-size: 1rem;
     font-weight: 800;
 }
@@ -67,10 +67,38 @@
     font-weight: 550;
 }
 
-#postForm > form {
+.postForm > form {
+    padding: 0%;
     width: 100%
 }
 
-#postForm > #title {
-    width: 100%
+.postForm p {
+    font-style: italic;
+}
+
+.postForm .title, .postForm .content {
+    margin-bottom: 2%;
+    width: 87%
+}
+
+.postForm .content {
+    overflow-y: visible;
+    height: 80px;
+}
+
+button {
+    background: none;
+    padding: 0.2rem;
+    margin: 0.2rem;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+    text-decoration: italics;
+    outline: none;
+}
+
+#checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
 }

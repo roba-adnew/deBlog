@@ -1,6 +1,6 @@
 import React from 'react';
 import App from '../App'
-import EditFeed from '../Components/EditFeed'
+import EditFeed from '../Components/AuthorFeed'
 import Login from '../../../shared/Components/Login';
 
 const routes = [
@@ -16,10 +16,6 @@ const routes = [
         path: "/login",
         element: <Login />
       }
-       //   ,{
-    //     path: "/new-post",
-    //     element: <PostForm />,
-    //   }
     ]
   }
 ];

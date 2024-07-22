@@ -1,22 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../../shared/Contexts/AuthContext';
-import { addPost, getAuthorPosts } from '../utils/postApi'
+import { addPost, editPost, getAuthorPosts } from '../utils/postApi'
+import PostForm from './PostForm';
 import '../Styles/EditFeed.css'
 
-function PostForm({ inEditPost = {}, refetch }) {
+function NewPostButton({ refetch }) {
     const { user } = useAuth();
     const [editing, setEditing] = useState(false)
     const [postDraft, setPostDraft] = useState({
         user: user._id,
-        title: inEditPost.title,
-        content: inEditPost.content,
-        published: inEditPost.published || false,
+        title: '',
+        content: '',
+        published: false,
         draft: true,
     })
 
+    function updatePostDraft(e) {
+        const updateValue = e.target.name === 'draft' ?
+            !postDraft.draft : e.target.value
+        setPostDraft({
+            ...postDraft,
+            [e.target.name]: updateValue
+        })
+    }
+
     function toggleForm() { setEditing(!editing) }
 
-    async function handlePostSubmission(e) {
+    async function handleNewPostSubmission(e) {
         e.preventDefault();
         try {
             console.log('commencing submitting post')
@@ -32,54 +42,55 @@ function PostForm({ inEditPost = {}, refetch }) {
         }
     }
 
-    function updatePostDraft(e) {
-        setPostDraft({
-            ...postDraft,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const newPostButton =
-        <div id='newPostButton' onClick={toggleForm}>
-            + Start on a new post
-        </div>
-
-    const newPostForm =
-        <div className='postForm'>
-            <form onSubmit={handlePostSubmission} method='POST'>
-                <input
-                    name='title'
-                    className='title'
-                    placeholder='title'
-                    value={postDraft.title || ''}
-                    onChange={updatePostDraft}
-                />
-                <input
-                    name='content'
-                    className='content'
-                    placeholder='content'
-                    value={postDraft.content || ''}
-                    onChange={updatePostDraft}
-                />
-                <div className='formBtnsDiv'>
-                    <button className='addBtn'>Add Post&nbsp;</button>
-                    <button className='cancelBtn' onClick={toggleForm}>
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-
     return (
-        editing ? newPostForm : newPostButton
+        editing
+            ? <PostForm
+                post={postDraft}
+                updatePost={updatePostDraft}
+                toggleForm={toggleForm}
+                handleSubmission={handleNewPostSubmission}
+            />
+            : <div id='newPostButton' onClick={toggleForm}>
+                + Start on a new post
+            </div>
     )
 }
 
-function PostPreviewCard({ post }) {
-    { console.log(post) }
+function PostPreviewCard({ postDetails, refetch }) {
+    const [post, setPost] = useState(postDetails)
+    const [editing, setEditing] = useState(false)
 
-    return (
-        <div className="post" >
+    function updatePost(e) {
+        const updateValue = e.target.name === 'draft' ?
+            !post.draft : e.target.value
+        setPost({
+            ...post,
+            [e.target.name]: updateValue
+        })
+    }
+
+    function toggleForm() { setEditing(!editing) }
+    console.log('post preview has', post)
+
+    async function handleEditSubmission(e) {
+        e.preventDefault()
+        try {
+            console.log('commencing post edit', post)
+            const response =
+                await editPost(post._id, post)
+            console.log('response', response)
+            console.log('comment updated')
+            refetch(true)
+        } catch (err) {
+            console.error(err)
+            throw err
+        } finally {
+            toggleForm()
+        }
+    }
+
+    const postPreviewCard =
+        <div className='post' onClick={toggleForm}>
             <div className='title'>
                 {post.title.length > 24
                     ? post.title.slice(0, 24).trimEnd().concat('...')
@@ -94,12 +105,21 @@ function PostPreviewCard({ post }) {
                     {post.published ? 'published' : 'not published'}
                 </div>
             </div>
-
         </div>
+
+    return (
+        editing ?
+            <PostForm
+                post={post}
+                updatePost={updatePost}
+                toggleForm={toggleForm}
+                handleSubmission={handleEditSubmission}
+            />
+            : postPreviewCard
     )
 }
 
-function EditFeed({ }) {
+function EditFeed() {
     const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState([])
     const [refetch, setRefetch] = useState(false)
@@ -132,18 +152,16 @@ function EditFeed({ }) {
         )
     }
 
-    if (!posts || posts.length === 0) {
-        console.log('issue with post check')
-        return
-    }
-
     return (
         <div id="feed">
-            {console.log('trying to load the feed')}
             {posts.map(post => (
-                <PostPreviewCard post={post} key={post._id} />
+                <PostPreviewCard
+                    postDetails={post}
+                    key={post._id}
+                    refetch={setRefetch}
+                />
             ))}
-            <PostForm refetch={setRefetch}/>
+            <NewPostButton refetch={setRefetch} />
         </div>
     )
 }
