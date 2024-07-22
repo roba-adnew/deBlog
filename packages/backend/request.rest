@@ -28,7 +28,7 @@ GET http://localhost:4000/api/posts
 ###
 # Load blog posts for an author
 GET http://localhost:4000/api/posts/author
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsIm5hbWUiOiJ0b2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE2MjU1NzksImV4cCI6MTcyMTYyOTE3OX0.uNCnSzoEio983YU81QldqacFjvL7gICBvaMyStVA61Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ODViOGYwMDlhNDM2MmJmODNmNjI1ZCIsIm5hbWUiOiJ0b2JhIiwiYXV0aG9yIjp0cnVlLCJpYXQiOjE3MjE2NjY3MzAsImV4cCI6MTcyMTY3MDMzMH0.90P8QPZ97JY3tjknda_fkM7aPlP7hD3R_LHzbVCPHN0
 
 
 ###

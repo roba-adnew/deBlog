@@ -33,10 +33,20 @@ const jwtStrategyOpts = {
 }
 
 passport.use(
-    new JwtStrategy(jwtStrategyOpts, (jwt_payload, done) => {
-        return done(null, jwt_payload)
+    new JwtStrategy(jwtStrategyOpts, async (jwt_payload, done) => {
+        debug('jwt payload', jwt_payload)
+        try {
+            const user = await User.findById(jwt_payload.id)
+            if (!user) return done(
+                null, false, {message: 'user somehow not in db'}
+            )
+            return done(null, user)
+        }
+        catch (err) {
+            debug('error trying to query user on authenitcatoin')
+            return done(err, false)
+        }
     })
 )
-
 
 module.exports = passport
