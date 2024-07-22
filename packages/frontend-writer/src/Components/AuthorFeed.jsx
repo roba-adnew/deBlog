@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useAuth } from '../../../shared/Contexts/AuthContext';
 import { addPost, editPost, getAuthorPosts } from '../utils/postApi'
 import PostForm from './PostForm';
@@ -170,6 +171,12 @@ function AuthorFeed() {
             <NewPostButton refetch={setRefetch} />
         </div>
     )
+}
+
+NewPostButton.propTypes = { refetch: PropTypes.func }
+PostPreviewCard.propTypes = { 
+    postDetails: PropTypes.object, 
+    refetch: PropTypes.func 
 }
 
 export default AuthorFeed
