@@ -13,12 +13,7 @@ exports.postsGet = asyncHandler(async (req, res, next) => {
 
 exports.authorPostsGet = [
     passport.authenticate("jwt", { session: false }),
-    (req, res, next) => {
-        debug('user', req.user)
-        if (!req.user) return res.status(401).json({ message: 'Unauthorized', err })
-        debug('User authenticated: %O', req.user)
-        next()
-    },
+    checkUser,
     asyncHandler(async (req, res, next) => {
         const posts = await Post
             .find({ user: req.user.id })
@@ -145,4 +140,11 @@ exports.commentEditPut = (req, res, next) => {
                 .json({ message: 'Comment updated successfully', comment });
         })(req, res, next)
     })(req, res, next)
+}
+
+function checkUser(req, res, next) {
+    debug('user', req.user)
+    if (!req.user) return res.status(401).json({ message: 'Unauthorized', err })
+    debug('User authenticated: %O', req.user)
+    next()
 }
