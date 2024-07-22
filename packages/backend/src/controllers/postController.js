@@ -22,23 +22,20 @@ exports.authorPostsGet = [
         res.json({ posts })
     })
 ]
-exports.postCreationPost = (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json({ message: 'Unauthorized' })
-        req.user = user;
-        debug('User authenticated: %O', req.user)
-        asyncHandler(async (req, res, next) => {
-            const postEntry = req.body;
-            debug('Received request body:', postEntry);
-            debug('Authenticated user:', req.user);
-            const post = new Post(postEntry)
-            const result = await post.save()
-            debug(`Attempting post: %O`, result)
-            return res.status(201).json({ message: 'Post created' })
-        })(req, res, next)
-    })(req, res, next)
-}
+
+exports.postCreationPost = [
+    passport.authenticate("jwt", { session: false }),
+    checkUser,
+    asyncHandler(async (req, res) => {
+        const postEntry = req.body;
+        debug('Received request body:', postEntry);
+        debug('Authenticated user:', req.user);
+        const post = new Post(postEntry)
+        const result = await post.save()
+        debug(`Attempting post: %O`, result)
+        return res.status(201).json({ message: 'Post created' })
+    })
+]
 
 exports.postEditPut = (req, res, next) => {
     passport.authenticate("jwt", { session: false }, (err, user, info) => {
@@ -81,38 +78,33 @@ exports.commentsGet = asyncHandler(async (req, res, next) => {
     res.json({ comments })
 })
 
-exports.commentCreationPost = (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json({ message: 'Unauthorized' })
-        asyncHandler(async (req, res, next) => {
-            debug('User authenticated: %O', user)
-            debug('content', req.body)
-            const updatedPost = await Post.findByIdAndUpdate(
-                req.params.postId,
-                {
-                    $push: {
-                        comments: {
-                            user: user.id,
-                            content: req.body.content
-                        }
-                    }
-                },
-                { new: true, runValidators: true }
-            )
-            if (!updatedPost) throw new Error('Post not found')
-            debug('Comment added: %O', updatedPost)
-            res.status(201).json({ message: 'Comment created' })
-        })(req, res, next)
-    })(req, res, next)
-}
-
-exports.commentEditPut = (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, (err, user, info) => {
-        if (err) return next(err);
-        if (!user) return res.status(401).json({ message: 'Unauthorized' })
-        req.user = user;
+exports.commentCreationPost = [
+    passport.authenticate("jwt", { session: false }),
+    checkUser,
+    asyncHandler(async (req, res, next) => {
         debug('User authenticated: %O', req.user)
+        debug('content', req.body)
+        const updatedPost = await Post.findByIdAndUpdate(
+            req.params.postId,
+            {
+                $push: {
+                    comments: {
+                        user: req.user.id,
+                        content: req.body.content
+                    }
+                }
+            },
+            { new: true, runValidators: true }
+        )
+        if (!updatedPost) throw new Error('Post not found')
+        debug('Comment added: %O', updatedPost)
+        res.status(201).json({ message: 'Comment created' })
+    })
+]
+
+exports.commentEditPut = [
+    passport.authenticate("jwt", { session: false }),
+        checkUser,
         asyncHandler(async (req, res, next) => {
             const postId = req.params.postId
             const { commentId, newContent } = req.body;
@@ -138,9 +130,8 @@ exports.commentEditPut = (req, res, next) => {
             res
                 .status(201)
                 .json({ message: 'Comment updated successfully', comment });
-        })(req, res, next)
-    })(req, res, next)
-}
+        })
+]
 
 function checkUser(req, res, next) {
     debug('user', req.user)
