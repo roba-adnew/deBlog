@@ -44,7 +44,6 @@ exports.loginPost = [
         if (req.body.isAuthorLogin && !user.author) {
             return res.status(403).json({ message: 'User is not an author' });
         }
-
         const accessToken = generateAccessToken(user)
         const refreshToken = jwt.sign(
             user,
@@ -55,85 +54,74 @@ exports.loginPost = [
             token: refreshToken,
             userId: user.id
         }
-        try {
-            const dbRefreshToken = new RefreshToken(refreshTokenDetails)
-            const result = await dbRefreshToken.save();
-            debug(`DB Refresh Token save results: %O`, result)
-            res.json({ user: req.user, accessToken, message: 'logged in' })
-        } catch (err) {
-            debug(`Error saving refresh token: %O`, err)
-            res.status(401).json({ message: 'Unauthorized' });
-        }
+        const dbRefreshToken = new RefreshToken(refreshTokenDetails)
+        const result = await dbRefreshToken.save();
+        debug(`DB Refresh Token save results: %O`, result)
+        res.json({ user: req.user, accessToken, message: 'logged in' })
     })
 ]
 
 exports.refreshToken = asyncHandler(async (req, res) => {
-    try {
-        if (!req.body.user) return res.sendStatus(401);
-        const user = req.body.user;
-        debug('user: %', user)
-        const dbTokenEntry = await RefreshToken.findOne({ userId: user._id })
-        if (!dbTokenEntry) return res.sendStatus(403);
-        debug('refresh token extracted: %O', dbTokenEntry)
+    if (!req.body.user) return res.sendStatus(401);
+    const user = req.body.user;
+    debug('user: %', user)
+    const dbTokenEntry = await RefreshToken.findOne({ userId: user._id })
+    if (!dbTokenEntry) return res.sendStatus(403);
+    debug('refresh token extracted: %O', dbTokenEntry)
 
-        const expirationDate = new Date(dbTokenEntry.expiresAt).getTime();
+    const expirationDate = new Date(dbTokenEntry.expiresAt).getTime();
 
-        if (expirationDate < Date.now()) {
-            debug('Current refresh token is expired')
-            const query = { userId: user._id }
-            const deleteResult = await RefreshToken.deleteMany(query)
-            debug('Deleting refresh token on access token refresh %O:'
-                , deleteResult)
+    if (expirationDate < Date.now()) {
+        debug('Current refresh token is expired')
+        const query = { userId: user._id }
+        const deleteResult = await RefreshToken.deleteMany(query)
+        debug('Deleting refresh token on access token refresh %O:'
+            , deleteResult)
 
+        const userDetails = {
+            id: user._id,
+            name: user.name,
+            author: user.author
+        }
+        const accessToken = generateAccessToken(userDetails)
+        const refreshToken = jwt.sign(
+            userDetails,
+            process.env.REFRESH_TOKEN_SECRET,
+            { expiresIn: '7d' }
+        )
+        const dbRefreshToken = new RefreshToken({
+            token: refreshToken,
+            userId: user._id
+        })
+        const result = await dbRefreshToken.save();
+        return res.json({ accessToken: accessToken })
+    }
+
+    const refreshToken = dbTokenEntry.token;
+    debug('refresh token identified')
+
+    jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, user) => {
             const userDetails = {
-                id: user._id,
+                id: user.id,
                 name: user.name,
                 author: user.author
             }
-            const accessToken = generateAccessToken(userDetails)
-            const refreshToken = jwt.sign(
-                userDetails,
-                process.env.REFRESH_TOKEN_SECRET,
-                { expiresIn: '7d' }
-            )
-            const dbRefreshToken = new RefreshToken({
-                token: refreshToken,
-                userId: user._id
-            })
-            const result = await dbRefreshToken.save();
-            return res.json({ accessToken: accessToken })
-        }
-
-        const refreshToken = dbTokenEntry.token;
-        debug('refresh token identified')
-
-        jwt.verify(
-            refreshToken,
-            process.env.REFRESH_TOKEN_SECRET,
-            (err, user) => {
-                const userDetails = {
-                    id: user.id,
-                    name: user.name,
-                    author: user.author
-                }
-                if (err) {
-                    return res
-                        .sendStatus(403)
-                        .json({ message: 'Error verifying refresh token' })
-                }
-                const accessToken = generateAccessToken(userDetails)
-                return res.json(accessToken)
+            if (err) {
+                return res
+                    .sendStatus(403)
+                    .json({ message: 'Error verifying refresh token' })
             }
-        )
-    } catch (err) {
-        debug('Error refreshing token: %O', err)
-        res.status(500).json({ message: 'An unexpected error occurred' });
-    }
+            const accessToken = generateAccessToken(userDetails)
+            return res.json(accessToken)
+        }
+    )
 })
 
 exports.logoutPost = asyncHandler(async (req, res) => {
     const userId = req.body.userId;
-    try {
         const query = { userId: userId }
         debug(query)
         const result = await RefreshToken.deleteMany(query)
@@ -148,10 +136,6 @@ exports.logoutPost = asyncHandler(async (req, res) => {
         res.
             status(200)
             .json({ message: 'Logged out successfully', result: result })
-    } catch (err) {
-        debug('Came across the following error logging out: %O', err)
-        res.status(500).json({ message: 'An unexpected error occurred' });
-    }
 })
 
 function generateAccessToken(user) {
