@@ -24,7 +24,7 @@ async function getComments(postId) {
 
 async function editComment(postId, commentId, newContent) {
     const url = `http://localhost:4000/api/posts/${postId}/comments/edit`
-    const method = 'POST'
+    const method = 'PUT'
     const body = { commentId, newContent}
     try {
         const response = await fetchWithToken(url, method, body)
