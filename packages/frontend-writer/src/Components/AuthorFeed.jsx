@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useAuth } from '../../../shared/Contexts/AuthContext';
 import { addPost, editPost, getAuthorPosts } from '../utils/postApi'
 import PostForm from './PostForm';
-import '../Styles/EditFeed.css'
+import '../Styles/AuthorFeed.css'
 
 function NewPostButton({ refetch }) {
     const { user } = useAuth();
@@ -119,7 +119,7 @@ function PostPreviewCard({ postDetails, refetch }) {
     )
 }
 
-function EditFeed() {
+function AuthorFeed() {
     const [isLoading, setIsLoading] = useState(true)
     const [posts, setPosts] = useState([])
     const [refetch, setRefetch] = useState(false)
@@ -166,4 +166,4 @@ function EditFeed() {
     )
 }
 
-export default EditFeed
+export default AuthorFeed

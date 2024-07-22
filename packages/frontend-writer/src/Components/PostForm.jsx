@@ -1,5 +1,5 @@
 import React from 'react'
-import '../Styles/EditFeed.css'
+import '../Styles/AuthorFeed.css'
 
 function PostForm({ post, updatePost, toggleForm, handleSubmission }) {
     return (

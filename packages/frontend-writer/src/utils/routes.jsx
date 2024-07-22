@@ -1,6 +1,6 @@
 import React from 'react';
 import App from '../App'
-import EditFeed from '../Components/AuthorFeed'
+import AuthorFeed from '../Components/AuthorFeed'
 import Login from '../../../shared/Components/Login';
 
 const routes = [
@@ -10,7 +10,7 @@ const routes = [
     children: [
       {
         index: true,
-        element: <EditFeed />
+        element: <AuthorFeed />
       },
       {
         path: "/login",
