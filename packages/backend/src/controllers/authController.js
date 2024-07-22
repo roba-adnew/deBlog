@@ -7,29 +7,20 @@ const passport = require('passport')
 const User = require('../models/user')
 const RefreshToken = require('../models/refreshToken');
 
-exports.accountCreationPost = asyncHandler(async (req, res, next) => {
-    bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-        if (err) {
-            debug(`password hashing failed for ${req.body.username}`)
-            return next(err)
-        }
-        try {
-            const user = new User({
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                username: req.body.username,
-                hashedPassword: hashedPassword,
-                author: req.body.author,
-            })
-            const result = await user.save()
-            debug(`Setting up account for ${req.body.username}: %O`, result)
-            return res.status(201).json({ message: 'Account created' })
-
-        } catch (err) {
-            debug(`Account creation error for ${req.body.username}: %O`, err)
-            return next(err)
-        }
+exports.accountCreationPost = asyncHandler(async (req, res) => {
+    const hashedPassword = await bcrypt.hash(
+        req.body.password, process.env.REFRESH_TOKEN_SECRET
+    )
+    const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        username: req.body.username,
+        hashedPassword: hashedPassword,
+        author: req.body.author,
     })
+    const result = await user.save()
+    debug(`Setting up account for ${req.body.username}: %O`, result)
+    return res.status(201).json({ message: 'Account created' })
 })
 
 exports.loginPost = [
@@ -122,20 +113,20 @@ exports.refreshToken = asyncHandler(async (req, res) => {
 
 exports.logoutPost = asyncHandler(async (req, res) => {
     const userId = req.body.userId;
-        const query = { userId: userId }
-        debug(query)
-        const result = await RefreshToken.deleteMany(query)
-        if (result.deletedCount === 0) {
-            debug('Deleted reads: %O', result)
-            return res
-                .status(404)
-                .json({ message: 'Refresh token unavailable' })
-        }
-        result.deletedCount > 0
-            && debug('Multiple refresh tokens were stored: %O', result)
-        res.
-            status(200)
-            .json({ message: 'Logged out successfully', result: result })
+    const query = { userId: userId }
+    debug(query)
+    const result = await RefreshToken.deleteMany(query)
+    if (result.deletedCount === 0) {
+        debug('Deleted reads: %O', result)
+        return res
+            .status(404)
+            .json({ message: 'Refresh token unavailable' })
+    }
+    result.deletedCount > 0
+        && debug('Multiple refresh tokens were stored: %O', result)
+    res.
+        status(200)
+        .json({ message: 'Logged out successfully', result: result })
 })
 
 function generateAccessToken(user) {
