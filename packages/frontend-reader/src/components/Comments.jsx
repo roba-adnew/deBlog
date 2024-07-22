@@ -151,7 +151,6 @@ function CommentSection({ postId }) {
                                 Cancel
                             </button>
                         </div>
-
                     </form>
                 </div>
                 :<div className='addCommentButton' onClick={toggleForm}>

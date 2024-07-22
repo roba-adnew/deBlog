@@ -15,7 +15,7 @@ const routes = [
       },
       {
         path: "/sign-up",
-        element: <SignUpForm />,
+        element: <SignUpForm requester='reader'/>,
       },
       {
         path: "/login",
