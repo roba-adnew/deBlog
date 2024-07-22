@@ -11,5 +11,10 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5"
+  },
+  "overrides": {
+    "chokidar": {
+      "fsevents": "^2.3.2"
+    }
   }
 }
