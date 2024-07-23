@@ -16,7 +16,6 @@
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.4",
     "vite": "^5.3.1",
-    
     "@rollup/rollup-linux-x64-gnu": "4.6.1"
   },
   "dependencies": {
@@ -35,6 +34,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
+    "vite": "^5.2.0",
+    "vitest": "^1.4.0",
     "@vitejs/plugin-react": "^4.3.1"
   },
   "packageManager": "npm@10.8.1"
