@@ -15,7 +15,6 @@ dist-ssr
 **/.rest
 **/*example*
 **/*Example*
-package-lock.json
 
 # Editor directories and files
 .vscode/*
